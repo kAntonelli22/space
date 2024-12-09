@@ -15,7 +15,7 @@ signal turn_over
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-   pass # Replace with function body.
+   pass
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -33,14 +33,23 @@ func _on_turn_button_pressed():
    emit_signal("turn_over")
 
 # toggles and updates the bottom left info panel with the selected object
-func update_info_panel():
-   main_node.obj_selected
-   name_label.text = main_node.obj_selected.name
+func update_info_panel(obj):
+   name_label.text = obj.name
    
-   health_bar.max_value = main_node.obj_selected.MAX_HEALTH
-   health_bar.value = main_node.obj_selected.health_points
+   health_bar.max_value = obj.MAX_HEALTH
+   health_bar.value = obj.health_points
    
-   movement_bar.max_value = main_node.obj_selected.MAX_MOVEMENT
-   movement_bar.value = main_node.obj_selected.movement_points
+   movement_bar.max_value = obj.MAX_MOVEMENT
+   movement_bar.value = obj.movement_points
    
-   info_panel.visible = true
+   info_panel.show()
+   
+func select_signal(new_obj, old_obj):
+   update_info_panel(new_obj)
+   
+func deselect_signal(obj):
+   info_panel.hide()
+
+func connect_signals():
+   Global.connect("obj_selected", select_signal)
+   Global.connect("obj_deselected", deselect_signal)
