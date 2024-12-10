@@ -7,7 +7,7 @@ extends Node2D
 @onready var enemy_ships := get_tree().get_nodes_in_group("EnemyShips")
 
 
-func _process(delta):
+func _process(_delta):
    # update ship groups
    player_ships = get_tree().get_nodes_in_group("PlayerShips")
    friendly_ships = get_tree().get_nodes_in_group("FriendlyShips")

@@ -7,11 +7,16 @@ var ships = {
 }
 var railgun_shell := preload("res://scenes/railgun_shell.tscn")
 
-# global signals
+# --- global signals --- #
+signal next_turn
+# ship signals
 signal obj_selected(new_selected : Object, old_selected : Object)
 signal obj_deselected(old_selected : Object)
 signal damaged(obj_damaged : Object, num_damaged : int)
-signal next_turn
+# weapon signals
+signal obj_hit(obj : Object, weapon : Object, origin : Object)
+signal shell_destroyed(weapon : Object, origin : Object)
+# --- global signals --- #
 
 # global variables
 var main : Node2D
@@ -27,7 +32,7 @@ func _ready() -> void:
    pass
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
    pass
 
 func update_pathfinding(main_node):
@@ -64,13 +69,31 @@ func check_collision_with_group(group : String, coords : Vector2):
    return false
 # end of check collision with group function ---------------------------------
 
+# takes a fleet array and deploys it to the given coordinates
+func deploy_fleet(fleet : Array, faction : int, coords : Vector2):
+   var alternator : bool = true
+   instance_ship(main, fleet[0], faction, coords)
+   for i in range(1, fleet.size()):
+      if alternator:
+         alternator = false
+         instance_ship(main, fleet[i], faction, coords + Vector2(i + 1, 0))
+      else:
+         alternator = true
+         instance_ship(main, fleet[i], faction, coords + Vector2(-i, 0))
+# end of deploy fleet function -----------------------------------------------
+
+# creates a new instance of a ship, sets its position, names it, sets its faction, and adds it to the scene
+func instance_ship(map, ship_type : String, faction : int, ship_position : Vector2i):
+   var ship = Global.ships[ship_type].instantiate()
+   ship.name = ship_type
+   ship.position = map.tile_board.map_to_local(ship_position)
+   ship.faction = faction
+   map.add_child(ship)
+   ship.ship_sprite.rotation += deg_to_rad(180 * faction)
+# end of instance ship function ----------------------------------------------
+
 # called by map node after all new instances that access signals have been added
 func connect_signals():
-   connect("obj_selected", obj_selected_signal)
-   connect("obj_deselected", obj_deselected_signal)
-
-func obj_selected_signal(new_obj, old_obj):
-   pass#print("obj selected recieved by Global: ", new_obj.name)
-   
-func obj_deselected_signal(old_selected):
-   pass#print("obj deselected recieved by Global: ", old_selected.name)
+   pass
+   #connect("obj_selected", obj_selected_signal)
+   #connect("obj_deselected", obj_deselected_signal)

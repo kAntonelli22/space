@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=4 uid="uid://d08ph7trk3wkr"]
+[gd_scene load_steps=22 format=4 uid="uid://d08ph7trk3wkr"]
 
 [ext_resource type="Texture2D" uid="uid://ctj26435wx3ve" path="res://assets/grid_tile.png" id="1_3651t"]
 [ext_resource type="Script" path="res://scripts/space_game.gd" id="1_p277o"]
@@ -87,7 +87,7 @@ sources/2 = SubResource("TileSetAtlasSource_v0epe")
 sources/3 = SubResource("TileSetAtlasSource_wof14")
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ohicy"]
-bg_color = Color(0.217657, 0.242736, 0.316111, 1)
+bg_color = Color(0.160784, 0.160784, 0.211765, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jdbxc"]
 bg_color = Color(1, 0.241742, 0.321382, 1)
@@ -97,6 +97,12 @@ bg_color = Color(0.219608, 0.243137, 0.317647, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_csdvv"]
 bg_color = Color(0.341176, 0.321569, 0.905882, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rrnwk"]
+bg_color = Color(0.160784, 0.160784, 0.211765, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_uxpn4"]
+bg_color = Color(0, 0.803922, 0.384314, 1)
 
 [node name="SpaceGame" type="Node2D"]
 script = ExtResource("1_p277o")
@@ -150,7 +156,7 @@ anchors_preset = -1
 anchor_bottom = 0.0125
 offset_top = 64.0
 offset_right = 64.0
-offset_bottom = 472.0
+offset_bottom = 504.0
 size_flags_horizontal = 0
 size_flags_vertical = 0
 theme_override_constants/separation = 32
@@ -172,31 +178,40 @@ layout_mode = 2
 color = Color(0.160784, 0.160784, 0.211765, 1)
 
 [node name="BottomLeft" type="ColorRect" parent="UI"]
-offset_top = 512.0
+visible = false
+offset_top = 544.0
 offset_right = 192.0
 offset_bottom = 640.0
 color = Color(0.160784, 0.160784, 0.211765, 1)
 
 [node name="VBoxContainer" type="VBoxContainer" parent="UI/BottomLeft"]
-layout_mode = 0
-offset_right = 192.0
-offset_bottom = 128.0
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 theme_override_constants/separation = 0
 
 [node name="Label" type="Label" parent="UI/BottomLeft/VBoxContainer"]
 layout_mode = 2
 text = "Name"
 
-[node name="HealthBar" type="ProgressBar" parent="UI/BottomLeft/VBoxContainer"]
+[node name="Container" type="VBoxContainer" parent="UI/BottomLeft/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 0
+alignment = 2
+
+[node name="HealthBar" type="ProgressBar" parent="UI/BottomLeft/VBoxContainer/Container"]
 custom_minimum_size = Vector2(0, 6)
 layout_mode = 2
 theme_override_styles/background = SubResource("StyleBoxFlat_ohicy")
 theme_override_styles/fill = SubResource("StyleBoxFlat_jdbxc")
 step = 1.0
 value = 50.0
-show_percentage = false
 
-[node name="MovementBar" type="ProgressBar" parent="UI/BottomLeft/VBoxContainer"]
+[node name="MovementBar" type="ProgressBar" parent="UI/BottomLeft/VBoxContainer/Container"]
 custom_minimum_size = Vector2(0, 6)
 layout_mode = 2
 theme_override_styles/background = SubResource("StyleBoxFlat_woi3u")
@@ -204,7 +219,13 @@ theme_override_styles/fill = SubResource("StyleBoxFlat_csdvv")
 max_value = 4.0
 step = 1.0
 value = 4.0
-show_percentage = false
+
+[node name="ActionBar" type="ProgressBar" parent="UI/BottomLeft/VBoxContainer/Container"]
+layout_mode = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_rrnwk")
+theme_override_styles/fill = SubResource("StyleBoxFlat_uxpn4")
+step = 1.0
+value = 75.0
 
 [node name="BottomMiddle" type="ColorRect" parent="UI"]
 offset_left = 224.0

@@ -9,7 +9,7 @@ func _ready():
    #pass
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
+func _process(_delta):
    var moveby : Vector2
    # if user presses keys -> move in the direction pressed
    if Input.is_action_pressed("CameraRight"):

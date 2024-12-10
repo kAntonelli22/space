@@ -16,6 +16,15 @@ func _ready():
 func _on_body_entered(body):
    if body == origin:
       return
+   Global.obj_hit.emit(body, self, origin)
+   
+   # roll damage with 25% chance of crit or miss and 50% chance of hit
+   var roll = randi_range(0, 3)
+   if roll == 3:
+      body.health_points -= 2
+   elif roll != 0:
+      body.health_points -= 1
+
    hit_target = true
    position = body.position
    $Sprite2D.texture = preload("res://assets/railgun_debris.png")
@@ -27,11 +36,13 @@ func _physics_process(delta):
       position += direction * speed * delta
    else:
       # slow down movement and fade away
-      position += direction * (speed / 10) * delta
+      position += direction * (speed / 10.0) * delta
       sprite.modulate.a -= 0.05
 
 func _on_visible_on_screen_notifier_2d_screen_exited():
+   Global.shell_destroyed.emit(self, origin)
    self.queue_free()
 
 func _on_destroy_timer_timeout():
+   Global.shell_destroyed.emit(self, origin)
    self.queue_free()

@@ -19,6 +19,10 @@ config/icon="res://assets/frigate.png"
 
 Global="*res://scripts/Global.gd"
 
+[debug]
+
+gdscript/warnings/unused_signal=0
+
 [display]
 
 window/size/viewport_width=640

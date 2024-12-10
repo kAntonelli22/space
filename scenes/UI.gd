@@ -1,15 +1,13 @@
 extends CanvasLayer
 
-signal game_paused
-signal turn_over
-
 @onready var main_node := get_parent()
 
 # ui components
 @onready var info_panel = $"BottomLeft"
 @onready var name_label = $"BottomLeft/VBoxContainer/Label"
-@onready var health_bar = $"BottomLeft/VBoxContainer/HealthBar"
-@onready var movement_bar = $"BottomLeft/VBoxContainer/MovementBar"
+@onready var health_bar = $BottomLeft/VBoxContainer/Container/HealthBar
+@onready var movement_bar = $BottomLeft/VBoxContainer/Container/MovementBar
+@onready var action_bar = $BottomLeft/VBoxContainer/Container/ActionBar
 
 @onready var pause_menu = $"../PauseMenu"
 
@@ -19,7 +17,7 @@ func _ready():
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
+func _process(_delta):
    pass
 
 
@@ -30,7 +28,7 @@ func _on_pause_button_pressed():
 func _on_turn_button_pressed():
    get_parent().turn_counter += 1
    $BottomRight/TurnCount.text = str("Turn Count: ", get_parent().turn_counter)
-   emit_signal("turn_over")
+   Global.next_turn.emit()
 
 # toggles and updates the bottom left info panel with the selected object
 func update_info_panel(obj):
@@ -42,12 +40,15 @@ func update_info_panel(obj):
    movement_bar.max_value = obj.MAX_MOVEMENT
    movement_bar.value = obj.movement_points
    
+   action_bar.max_value = obj.MAX_ACTION
+   action_bar.value = obj.action_points
+   
    info_panel.show()
    
-func select_signal(new_obj, old_obj):
+func select_signal(new_obj, _old_obj):
    update_info_panel(new_obj)
    
-func deselect_signal(obj):
+func deselect_signal(_obj):
    info_panel.hide()
 
 func connect_signals():

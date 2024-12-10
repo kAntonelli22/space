@@ -4,6 +4,7 @@ extends CharacterBody2D
 var faction : int = 0
 var is_selected : bool = false
 var is_moving : bool = false
+var is_firing : bool = false
 var over_object : bool = false
 
 # constant variables
@@ -40,11 +41,20 @@ func _ready():
    elif faction == 3:
       add_to_group("NeutralShips")
       
-   turn_button.connect("pressed", next_turn)
+   Global.connect("next_turn", next_turn)
    Global.connect("obj_selected", select_signal)
+   Global.connect("obj_hit", object_hit)
+   Global.connect("shell_destroyed", shell_destroyed)
 
 # handles movement logic, activates when any event activates
 func _input(event):
+   # do not allow inputs if ship is currently moving
+   if is_moving:
+      return
+   # do not allow inputs if shell is currently being fired
+   if is_firing:
+      return
+   
    var mouse_position = get_global_mouse_position()
    var tile = main.tile_board.local_to_map(mouse_position)
    var snapped_mouse = main.tile_board.map_to_local(tile)
@@ -56,43 +66,18 @@ func _input(event):
       over_object = true
    # fire railgun shell
    if event.is_action_pressed("RMB") and is_selected and over_object:
+      is_firing = true
       instance_shell()
    # if user clicks while ship selected -> move
    if event.is_action_pressed("RMB") and is_selected and !over_object:
-      var id_path
-      main.tile_overlay.clear()    # clear movement overlay
-      
-      # if ship currently moving -> create new path from next tile
-      if is_moving:
-         id_path = Global.astar.get_id_path(
-            main.tile_board.local_to_map(target_position),
-            main.tile_board.local_to_map(get_global_mouse_position()),
-         )
-      # else -> create new path from current tile, not including current tile
-      else:
-         id_path = Global.astar.get_id_path(
-            main.tile_board.local_to_map(global_position),
-            main.tile_board.local_to_map(get_global_mouse_position()),
-         ).slice(1)
-       # end of ship moving if statement -------------------------------------
+      var id_path = Global.astar.get_id_path(main.tile_board.local_to_map(global_position), tile).slice(1)
          
       # if local path var isnt empty -> set global path var and point path var
       if !id_path.is_empty() and id_path.size() <= movement_points:
+         main.tile_overlay.clear()    # clear movement overlay
          movement_points -= id_path.size()
          current_id_path = id_path
-         
-         # if ship currently moving -> create new point path from next tile
-         if is_moving:
-            current_point_path = Global.astar.get_point_path(
-               main.tile_board.local_to_map(target_position),
-               main.tile_board.local_to_map(get_global_mouse_position()),
-            )
-         # else -> create new point path from current tile
-         else:
-            current_point_path = Global.astar.get_point_path(
-               main.tile_board.local_to_map(global_position),
-               main.tile_board.local_to_map(get_global_mouse_position()),
-            )
+         current_point_path = Global.astar.get_point_path(main.tile_board.local_to_map(global_position), tile)
          # end of ship moving if statement -----------------------------------
       # end of local path var if statement -----------------------------------
    # end of click while selected if statement --------------------------------
@@ -107,7 +92,7 @@ func _input(event):
 # end of movement logic function ---------------------------------------------
 
 # handles sprite movement
-func _physics_process(delta):
+func _physics_process(_delta):
    # if global path var is empty -> no movement neccessary, exit early
    if current_id_path.is_empty():
       return
@@ -141,7 +126,7 @@ func _physics_process(delta):
 # end of sprite movement function --------------------------------------------
 
 # handles ship selection, activates when event occurs in ship bounds
-func _on_input_event(viewport, event, shape_idx):
+func _on_input_event(_viewport, event, _shape_idx):
    # if user clicks -> handle click
    if event.is_action_pressed("LMB"):
       
@@ -153,12 +138,15 @@ func _on_input_event(viewport, event, shape_idx):
          is_selected = true
          # change current cell on movement overlay
          display_movement()
+         
+      if is_selected:
+         print("is selected: ", is_selected)
       # end of ship not selected if statement --------------------------------
    # end of user click if statement ------------------------------------------
 # end of ship selection function --------------------------------------------
 
 # deselect ship if other ship emits select signal
-func select_signal(obj_selected : Object, obj_deselected):
+func select_signal(_obj_selected : Object, obj_deselected):
    if is_selected and obj_deselected == self:
       main.tile_overlay.clear()
       is_selected = false
@@ -187,10 +175,19 @@ func display_movement():
    # end of tile queue while loop --------------------------------------------
 # end of display movement function -------------------------------------------
 
+func object_hit(_object_hit : Object, _weapon : Object, _origin : Object):
+   pass
+   #if origin == self:
+      #print(self.name, " has hit ", object_hit.name, " with a ", weapon.name)
+   
+func shell_destroyed(_weapon : Object, _origin : Object):
+   #if origin == self:
+      #print(weapon.name, " from  ", origin.name, " has been destroyed")
+   is_firing = false
+
 func instance_shell():
    # get the mouse position, convert it to grid, then back to global
    var target = main.tile_board.local_to_map(get_global_mouse_position())
-   print("target is self:", target == Vector2i(position), "\nrailgun range: ", target - RAILGUN_RANGE < Vector2i(0, 0))
    # ensure that shell is fired within range
    if target == Vector2i(position) or target - RAILGUN_RANGE < Vector2i(0, 0):
       return

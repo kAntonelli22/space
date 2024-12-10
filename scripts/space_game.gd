@@ -11,37 +11,24 @@ var turn_counter : int = 0
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+   var fleet := ["frigate", "frigate", "frigate", "frigate", "frigate"]
    Global.update_pathfinding(self)
-   instance_ship("USS Bing Bong", "frigate", 0, Vector2i(11, 9))
-   instance_ship("RSS Hussein", "frigate", 1, Vector2i(10, 10))
-   instance_ship("USS Dink Doink", "frigate", 0, Vector2i(8, 6))
+   Global.deploy_fleet(fleet, 0, Vector2(10, 13))
    Global.connect_signals()
    ui.connect_signals()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
+func _process(_delta):
    pass
 
-func instance_ship(ship_name : String, ship_type : String, faction : int, ship_position : Vector2i):
-   var ship = Global.ships[ship_type].instantiate()
-   ship.name = ship_name
-   ship.position = tile_board.map_to_local(ship_position)
-   ship.faction = faction
-   add_child(ship)
-   # flip ship if faction is 1
-   ship.ship_sprite.rotation += deg_to_rad(180 * faction)
-
-
 # --- # --- # --- # --- # Issues -- # --- # --- # --- # --- #
-# - Ships cannot be reselected after being deselected through right click outside of movement zone
-# - random
-# - movement overlay bugs out when it hits boarders of the map
+# - random error message about point out of bounds, one for each ship
+# - movement overlay bugs out when it hits edge of the map
 
 # --- # --- # --- # --- # Issues -- # --- # --- # --- # --- #
 # --- # --- # --- # --- # Todo List # --- # --- # --- # --- #
-# - lock player actions until railgun shell hits target or leaves map
+# - begin implementing action points
 # - add scroll zooming
-# - 
 # - continue switch to signal system
 # - Fleet Picker Menu
 # - Deployment Phase
