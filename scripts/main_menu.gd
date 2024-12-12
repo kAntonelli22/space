@@ -13,7 +13,7 @@ func _process(delta):
 
 
 func _on_play_button_pressed():
-   get_tree().change_scene_to_file("res://scenes/space_game.tscn")
+   get_tree().change_scene_to_file("res://scenes/fleet_picker.tscn")
 
 func _on_guide_button_pressed():
    print("Open Guide")

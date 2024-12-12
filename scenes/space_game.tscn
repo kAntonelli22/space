@@ -4,12 +4,11 @@
 [ext_resource type="Script" path="res://scripts/space_game.gd" id="1_p277o"]
 [ext_resource type="Texture2D" uid="uid://5cfkkyubt5gd" path="res://assets/Space Background.png" id="2_uawoo"]
 [ext_resource type="Texture2D" uid="uid://c8w0vkcg7u47o" path="res://assets/asteroid1.png" id="4_4psgh"]
-[ext_resource type="Script" path="res://scenes/Path.gd" id="5_2wfu6"]
+[ext_resource type="Script" path="res://scripts/Path.gd" id="5_2wfu6"]
 [ext_resource type="Texture2D" uid="uid://cdk22pvny22ud" path="res://assets/asteroid_bunch1.png" id="5_lj82x"]
-[ext_resource type="Script" path="res://scenes/Camera2D.gd" id="5_rxdvn"]
+[ext_resource type="Script" path="res://scripts/Camera2D.gd" id="5_rxdvn"]
 [ext_resource type="Texture2D" uid="uid://smpyqetpeftd" path="res://assets/square.png" id="6_2v53n"]
-[ext_resource type="Script" path="res://scenes/UI.gd" id="10_ysnkh"]
-[ext_resource type="Script" path="res://scenes/PauseMenu.gd" id="11_bw1b1"]
+[ext_resource type="Script" path="res://scripts/UI.gd" id="10_ysnkh"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_rkt8w"]
 texture = ExtResource("1_3651t")
@@ -103,6 +102,35 @@ bg_color = Color(0.160784, 0.160784, 0.211765, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_uxpn4"]
 bg_color = Color(0, 0.803922, 0.384314, 1)
+
+[sub_resource type="GDScript" id="GDScript_f7tj8"]
+script/source = "extends CanvasLayer
+
+
+# Called when the node enters the scene tree for the first time.
+func _ready():
+   pass # Replace with function body.
+
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(_delta):
+   pass
+
+
+func _on_resume_button_pressed():
+   hide()
+   get_tree().paused = false
+
+func _on_guide_button_pressed():
+   print(\"Open Guide\")
+
+func _on_settings_button_pressed():
+   print(\"Open Settings\")
+
+func _on_menu_button_pressed():
+   get_tree().paused = false
+   get_tree().change_scene_to_file(\"res://scenes/main_menu.tscn\")
+"
 
 [node name="SpaceGame" type="Node2D"]
 script = ExtResource("1_p277o")
@@ -266,7 +294,7 @@ text = "End Turn"
 [node name="PauseMenu" type="CanvasLayer" parent="."]
 process_mode = 2
 visible = false
-script = ExtResource("11_bw1b1")
+script = SubResource("GDScript_f7tj8")
 
 [node name="TransparentBackground" type="ColorRect" parent="PauseMenu"]
 offset_right = 640.0

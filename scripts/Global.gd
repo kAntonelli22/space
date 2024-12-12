@@ -2,20 +2,31 @@ extends Node # singleton global script
 
 # scenes
 var ships = {
-   "frigate": preload("res://scenes/ship.tscn"),
-   "frigate2": preload("res://scenes/ship.tscn"),
+   "frigate": preload("res://scenes/frigate.tscn"),
+   "destroyer": preload("res://scenes/frigate.tscn"),
+   "cruiser": preload("res://scenes/frigate.tscn"),
+   "battlecruiser": preload("res://scenes/frigate.tscn"),
+   "battleship": preload("res://scenes/frigate.tscn"),
+}
+var ship_sprites = {
+   "frigate": preload("res://assets/frigate.png"),
+   "destroyer": preload("res://assets/frigate.png"),
+   "cruiser": preload("res://assets/frigate.png"),
+   "battlecruiser": preload("res://assets/frigate.png"),
+   "battleship": preload("res://assets/frigate.png"),
 }
 var railgun_shell := preload("res://scenes/railgun_shell.tscn")
 
 # --- global signals --- #
 signal next_turn
+signal attributes_changed(object : Object)                           # emitted when ships change attributes
 # ship signals
-signal obj_selected(new_selected : Object, old_selected : Object)
-signal obj_deselected(old_selected : Object)
-signal damaged(obj_damaged : Object, num_damaged : int)
+signal obj_selected(new_selected : Object, old_selected : Object)    # emitted when ships are selected
+signal obj_deselected(old_selected : Object)                         # emitted when ships are deselected
+signal damaged(obj_damaged : Object, num_damaged : int)              # emitted when a ship is damaged
 # weapon signals
-signal obj_hit(obj : Object, weapon : Object, origin : Object)
-signal shell_destroyed(weapon : Object, origin : Object)
+signal obj_hit(obj : Object, weapon : Object, origin : Object)       # emitted when a weapon hits an object
+signal shell_destroyed(weapon : Object, origin : Object)             # emitted when a shell calls queue_free()
 # --- global signals --- #
 
 # global variables
@@ -26,6 +37,9 @@ var tile_size : Vector2i
 
 var astar : AStarGrid2D = AStarGrid2D.new()
 var current_selected : Object
+
+# custom battle variables
+var player_fleet : Array
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:

@@ -11,9 +11,15 @@ var turn_counter : int = 0
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+   # debugging fleet
    var fleet := ["frigate", "frigate", "frigate", "frigate", "frigate"]
    Global.update_pathfinding(self)
-   Global.deploy_fleet(fleet, 0, Vector2(10, 13))
+   # if battle scene has been normally -> spawn chosen fleets, else -> spawn debug fleet
+   if Global.player_fleet.size() > 0:
+      Global.deploy_fleet(Global.player_fleet, 0, Vector2(10, 13))
+   else:
+      Global.deploy_fleet(fleet, 0, Vector2(10, 13))
+   # connect signal system together after ships have been instanced
    Global.connect_signals()
    ui.connect_signals()
 
@@ -27,7 +33,6 @@ func _process(_delta):
 
 # --- # --- # --- # --- # Issues -- # --- # --- # --- # --- #
 # --- # --- # --- # --- # Todo List # --- # --- # --- # --- #
-# - begin implementing action points
 # - add scroll zooming
 # - continue switch to signal system
 # - Fleet Picker Menu

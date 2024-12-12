@@ -20,9 +20,9 @@ func _on_body_entered(body):
    
    # roll damage with 25% chance of crit or miss and 50% chance of hit
    var roll = randi_range(0, 3)
-   if roll == 3:
+   if roll == 3 and "health_points" in body:
       body.health_points -= 2
-   elif roll != 0:
+   elif roll != 0 and "health_points" in body:
       body.health_points -= 1
 
    hit_target = true
