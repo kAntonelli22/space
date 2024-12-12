@@ -48,10 +48,10 @@ func _ready():
 func _process(delta):
     if health_points == 0:
         print(self.name, " has been destroyed")
-        get_tree().queue_free()
+        self.queue_free()
     elif health_points < 0:
         print(self.name, " has exploded")
-        get_tree().queue_free()
+        self.queue_free()
 
 # handles movement logic, activates when any event activates
 func _input(event):
