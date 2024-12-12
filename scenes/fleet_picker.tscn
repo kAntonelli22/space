@@ -1,0 +1,229 @@
+[gd_scene load_steps=3 format=3 uid="uid://bymf31ifew6l8"]
+
+[ext_resource type="Script" path="res://scripts/fleet_picker.gd" id="1_mea80"]
+[ext_resource type="Texture2D" uid="uid://b4b8ror8b47gu" path="res://assets/frigate.png" id="2_y03r5"]
+
+[node name="FleetPicker" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_mea80")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 0
+offset_right = 640.0
+offset_bottom = 640.0
+color = Color(0.160784, 0.160784, 0.211765, 1)
+
+[node name="MarginContainer" type="MarginContainer" parent="ColorRect"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 150
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ColorRect/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 75
+
+[node name="NameContainer" type="HBoxContainer" parent="ColorRect/MarginContainer/VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="PlayerLabel" type="Label" parent="ColorRect/MarginContainer/VBoxContainer/NameContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Player"
+horizontal_alignment = 1
+
+[node name="EnemyLabel" type="Label" parent="ColorRect/MarginContainer/VBoxContainer/NameContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Opps"
+horizontal_alignment = 1
+
+[node name="FleetContainer" type="HBoxContainer" parent="ColorRect/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 50
+alignment = 1
+
+[node name="PlayerFleet" type="HBoxContainer" parent="ColorRect/MarginContainer/VBoxContainer/FleetContainer"]
+layout_mode = 2
+
+[node name="PlayerSlot1" type="Button" parent="ColorRect/MarginContainer/VBoxContainer/FleetContainer/PlayerFleet"]
+custom_minimum_size = Vector2(50, 100)
+layout_mode = 2
+icon_alignment = 1
+expand_icon = true
+
+[node name="PlayerSlot2" type="Button" parent="ColorRect/MarginContainer/VBoxContainer/FleetContainer/PlayerFleet"]
+custom_minimum_size = Vector2(50, 100)
+layout_mode = 2
+icon_alignment = 1
+expand_icon = true
+
+[node name="PlayerSlot3" type="Button" parent="ColorRect/MarginContainer/VBoxContainer/FleetContainer/PlayerFleet"]
+custom_minimum_size = Vector2(50, 100)
+layout_mode = 2
+icon_alignment = 1
+expand_icon = true
+
+[node name="PlayerSlot4" type="Button" parent="ColorRect/MarginContainer/VBoxContainer/FleetContainer/PlayerFleet"]
+custom_minimum_size = Vector2(50, 100)
+layout_mode = 2
+icon_alignment = 1
+expand_icon = true
+
+[node name="PlayerSlot5" type="Button" parent="ColorRect/MarginContainer/VBoxContainer/FleetContainer/PlayerFleet"]
+custom_minimum_size = Vector2(50, 100)
+layout_mode = 2
+icon_alignment = 1
+expand_icon = true
+
+[node name="EnemyFleet" type="HBoxContainer" parent="ColorRect/MarginContainer/VBoxContainer/FleetContainer"]
+layout_mode = 2
+
+[node name="EnemySlot1" type="Button" parent="ColorRect/MarginContainer/VBoxContainer/FleetContainer/EnemyFleet"]
+custom_minimum_size = Vector2(50, 100)
+layout_mode = 2
+icon_alignment = 1
+expand_icon = true
+
+[node name="EnemySlot2" type="Button" parent="ColorRect/MarginContainer/VBoxContainer/FleetContainer/EnemyFleet"]
+custom_minimum_size = Vector2(50, 100)
+layout_mode = 2
+icon_alignment = 1
+expand_icon = true
+
+[node name="EnemySlot3" type="Button" parent="ColorRect/MarginContainer/VBoxContainer/FleetContainer/EnemyFleet"]
+custom_minimum_size = Vector2(50, 100)
+layout_mode = 2
+icon_alignment = 1
+expand_icon = true
+
+[node name="EnemySlot4" type="Button" parent="ColorRect/MarginContainer/VBoxContainer/FleetContainer/EnemyFleet"]
+custom_minimum_size = Vector2(50, 100)
+layout_mode = 2
+icon_alignment = 1
+expand_icon = true
+
+[node name="EnemySlot5" type="Button" parent="ColorRect/MarginContainer/VBoxContainer/FleetContainer/EnemyFleet"]
+custom_minimum_size = Vector2(50, 100)
+layout_mode = 2
+icon_alignment = 1
+expand_icon = true
+
+[node name="ShipCardContainer" type="HBoxContainer" parent="ColorRect/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 50
+alignment = 1
+
+[node name="PlayerShipList" type="HBoxContainer" parent="ColorRect/MarginContainer/VBoxContainer/ShipCardContainer"]
+layout_mode = 2
+
+[node name="FrigateButton" type="Button" parent="ColorRect/MarginContainer/VBoxContainer/ShipCardContainer/PlayerShipList"]
+custom_minimum_size = Vector2(50, 100)
+layout_mode = 2
+icon = ExtResource("2_y03r5")
+icon_alignment = 1
+expand_icon = true
+
+[node name="FrigateButton2" type="Button" parent="ColorRect/MarginContainer/VBoxContainer/ShipCardContainer/PlayerShipList"]
+custom_minimum_size = Vector2(50, 100)
+layout_mode = 2
+icon = ExtResource("2_y03r5")
+icon_alignment = 1
+expand_icon = true
+
+[node name="FrigateButton3" type="Button" parent="ColorRect/MarginContainer/VBoxContainer/ShipCardContainer/PlayerShipList"]
+custom_minimum_size = Vector2(50, 100)
+layout_mode = 2
+icon = ExtResource("2_y03r5")
+icon_alignment = 1
+expand_icon = true
+
+[node name="FrigateButton4" type="Button" parent="ColorRect/MarginContainer/VBoxContainer/ShipCardContainer/PlayerShipList"]
+custom_minimum_size = Vector2(50, 100)
+layout_mode = 2
+icon = ExtResource("2_y03r5")
+icon_alignment = 1
+expand_icon = true
+
+[node name="FrigateButton5" type="Button" parent="ColorRect/MarginContainer/VBoxContainer/ShipCardContainer/PlayerShipList"]
+custom_minimum_size = Vector2(50, 100)
+layout_mode = 2
+icon = ExtResource("2_y03r5")
+icon_alignment = 1
+expand_icon = true
+
+[node name="EnemyShipList" type="HBoxContainer" parent="ColorRect/MarginContainer/VBoxContainer/ShipCardContainer"]
+layout_mode = 2
+
+[node name="FrigateButton" type="Button" parent="ColorRect/MarginContainer/VBoxContainer/ShipCardContainer/EnemyShipList"]
+custom_minimum_size = Vector2(50, 100)
+layout_mode = 2
+icon = ExtResource("2_y03r5")
+icon_alignment = 1
+expand_icon = true
+
+[node name="FrigateButton2" type="Button" parent="ColorRect/MarginContainer/VBoxContainer/ShipCardContainer/EnemyShipList"]
+custom_minimum_size = Vector2(50, 100)
+layout_mode = 2
+icon = ExtResource("2_y03r5")
+icon_alignment = 1
+expand_icon = true
+
+[node name="FrigateButton3" type="Button" parent="ColorRect/MarginContainer/VBoxContainer/ShipCardContainer/EnemyShipList"]
+custom_minimum_size = Vector2(50, 100)
+layout_mode = 2
+icon = ExtResource("2_y03r5")
+icon_alignment = 1
+expand_icon = true
+
+[node name="FrigateButton4" type="Button" parent="ColorRect/MarginContainer/VBoxContainer/ShipCardContainer/EnemyShipList"]
+custom_minimum_size = Vector2(50, 100)
+layout_mode = 2
+icon = ExtResource("2_y03r5")
+icon_alignment = 1
+expand_icon = true
+
+[node name="FrigateButton5" type="Button" parent="ColorRect/MarginContainer/VBoxContainer/ShipCardContainer/EnemyShipList"]
+custom_minimum_size = Vector2(50, 100)
+layout_mode = 2
+icon = ExtResource("2_y03r5")
+icon_alignment = 1
+expand_icon = true
+
+[node name="ButtonContainer" type="HBoxContainer" parent="ColorRect/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="BackButton" type="Button" parent="ColorRect/MarginContainer/VBoxContainer/ButtonContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "<--"
+
+[node name="StartButton" type="Button" parent="ColorRect/MarginContainer/VBoxContainer/ButtonContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "-->"
+
+[connection signal="pressed" from="ColorRect/MarginContainer/VBoxContainer/FleetContainer/PlayerFleet/PlayerSlot1" to="." method="_on_player_slot_1_pressed"]
+[connection signal="pressed" from="ColorRect/MarginContainer/VBoxContainer/FleetContainer/PlayerFleet/PlayerSlot2" to="." method="_on_player_slot_2_pressed"]
+[connection signal="pressed" from="ColorRect/MarginContainer/VBoxContainer/FleetContainer/PlayerFleet/PlayerSlot3" to="." method="_on_player_slot_3_pressed"]
+[connection signal="pressed" from="ColorRect/MarginContainer/VBoxContainer/FleetContainer/PlayerFleet/PlayerSlot4" to="." method="_on_player_slot_4_pressed"]
+[connection signal="pressed" from="ColorRect/MarginContainer/VBoxContainer/FleetContainer/PlayerFleet/PlayerSlot5" to="." method="_on_player_slot_5_pressed"]
+[connection signal="pressed" from="ColorRect/MarginContainer/VBoxContainer/ShipCardContainer/PlayerShipList/FrigateButton" to="." method="_on_frigate_button_pressed"]
+[connection signal="pressed" from="ColorRect/MarginContainer/VBoxContainer/ShipCardContainer/PlayerShipList/FrigateButton2" to="." method="_on_frigate_button_2_pressed"]
+[connection signal="pressed" from="ColorRect/MarginContainer/VBoxContainer/ShipCardContainer/PlayerShipList/FrigateButton3" to="." method="_on_frigate_button_3_pressed"]
+[connection signal="pressed" from="ColorRect/MarginContainer/VBoxContainer/ShipCardContainer/PlayerShipList/FrigateButton4" to="." method="_on_frigate_button_4_pressed"]
+[connection signal="pressed" from="ColorRect/MarginContainer/VBoxContainer/ShipCardContainer/PlayerShipList/FrigateButton5" to="." method="_on_frigate_button_5_pressed"]
+[connection signal="pressed" from="ColorRect/MarginContainer/VBoxContainer/ButtonContainer/BackButton" to="." method="_on_back_button_pressed"]
+[connection signal="pressed" from="ColorRect/MarginContainer/VBoxContainer/ButtonContainer/StartButton" to="." method="_on_start_button_pressed"]
