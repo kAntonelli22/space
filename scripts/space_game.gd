@@ -17,8 +17,10 @@ func _ready():
    # if battle scene has been normally -> spawn chosen fleets, else -> spawn debug fleet
    if Global.player_fleet.size() > 0:
       Global.deploy_fleet(Global.player_fleet, 0, Vector2(10, 13))
+      Global.deploy_fleet(Global.enemy_fleet, 1, Vector2(10, 7))
    else:
       Global.deploy_fleet(fleet, 0, Vector2(10, 13))
+      Global.deploy_fleet(fleet, 1, Vector2(10, 7))
    # connect signal system together after ships have been instanced
    Global.connect_signals()
    ui.connect_signals()
@@ -30,23 +32,22 @@ func _process(_delta):
 # --- # --- # --- # --- # Issues -- # --- # --- # --- # --- #
 # - random error message about point out of bounds, one for each ship
 # - movement overlay bugs out when it hits edge of the map
+# - movement overlay covers other ships and ships can pass through eachother
 
 # --- # --- # --- # --- # Issues -- # --- # --- # --- # --- #
 # --- # --- # --- # --- # Todo List # --- # --- # --- # --- #
 # - add scroll zooming
-# - continue switch to signal system
-# - Fleet Picker Menu
+# - implement AI and player limited to controlling their own faction
 # - Deployment Phase
 # - Guide Scene
 # - Settings Scene
-# - Basic ship ui (name, hp, move points, etc.)
-# - Combat System (fire railgun, pdc, torpedo, do damage)
 
 # --- # --- # --- # --- # Todo List # --- # --- # --- # --- # 
 # --- # --- # --- # --- # Major --- # --- # --- # --- # --- #
 # - More art assets
 # - UI and Menu overhall
 # - different ships
+# - animations, particle effects, thrusters, nicer overlay
 
 # --- # --- # --- # --- # Major --- # --- # --- # --- # --- #
 # --- # --- # --- # --- # Control - # --- # --- # --- # --- #

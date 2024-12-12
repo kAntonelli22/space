@@ -45,6 +45,14 @@ func _ready():
    Global.connect("shell_destroyed", shell_destroyed)
 # end of ready function ------------------------------------------------------
 
+func _process(delta):
+    if health_points == 0:
+        print(self.name, " has been destroyed")
+        get_tree().queue_free()
+    elif health_points < 0:
+        print(self.name, " has exploded")
+        get_tree().queue_free()
+
 # handles movement logic, activates when any event activates
 func _input(event):
    # do not allow inputs if ship is currently moving or firing

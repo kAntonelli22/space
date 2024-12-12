@@ -129,35 +129,35 @@ alignment = 1
 [node name="PlayerShipList" type="HBoxContainer" parent="ColorRect/MarginContainer/VBoxContainer/ShipCardContainer"]
 layout_mode = 2
 
-[node name="FrigateButton" type="Button" parent="ColorRect/MarginContainer/VBoxContainer/ShipCardContainer/PlayerShipList"]
+[node name="PlayerFrigateButton" type="Button" parent="ColorRect/MarginContainer/VBoxContainer/ShipCardContainer/PlayerShipList"]
 custom_minimum_size = Vector2(50, 100)
 layout_mode = 2
 icon = ExtResource("2_y03r5")
 icon_alignment = 1
 expand_icon = true
 
-[node name="FrigateButton2" type="Button" parent="ColorRect/MarginContainer/VBoxContainer/ShipCardContainer/PlayerShipList"]
+[node name="PlayerFrigateButton2" type="Button" parent="ColorRect/MarginContainer/VBoxContainer/ShipCardContainer/PlayerShipList"]
 custom_minimum_size = Vector2(50, 100)
 layout_mode = 2
 icon = ExtResource("2_y03r5")
 icon_alignment = 1
 expand_icon = true
 
-[node name="FrigateButton3" type="Button" parent="ColorRect/MarginContainer/VBoxContainer/ShipCardContainer/PlayerShipList"]
+[node name="PlayerFrigateButton3" type="Button" parent="ColorRect/MarginContainer/VBoxContainer/ShipCardContainer/PlayerShipList"]
 custom_minimum_size = Vector2(50, 100)
 layout_mode = 2
 icon = ExtResource("2_y03r5")
 icon_alignment = 1
 expand_icon = true
 
-[node name="FrigateButton4" type="Button" parent="ColorRect/MarginContainer/VBoxContainer/ShipCardContainer/PlayerShipList"]
+[node name="PlayerFrigateButton4" type="Button" parent="ColorRect/MarginContainer/VBoxContainer/ShipCardContainer/PlayerShipList"]
 custom_minimum_size = Vector2(50, 100)
 layout_mode = 2
 icon = ExtResource("2_y03r5")
 icon_alignment = 1
 expand_icon = true
 
-[node name="FrigateButton5" type="Button" parent="ColorRect/MarginContainer/VBoxContainer/ShipCardContainer/PlayerShipList"]
+[node name="PlayerFrigateButton5" type="Button" parent="ColorRect/MarginContainer/VBoxContainer/ShipCardContainer/PlayerShipList"]
 custom_minimum_size = Vector2(50, 100)
 layout_mode = 2
 icon = ExtResource("2_y03r5")
@@ -167,35 +167,35 @@ expand_icon = true
 [node name="EnemyShipList" type="HBoxContainer" parent="ColorRect/MarginContainer/VBoxContainer/ShipCardContainer"]
 layout_mode = 2
 
-[node name="FrigateButton" type="Button" parent="ColorRect/MarginContainer/VBoxContainer/ShipCardContainer/EnemyShipList"]
+[node name="EnemyFrigateButton" type="Button" parent="ColorRect/MarginContainer/VBoxContainer/ShipCardContainer/EnemyShipList"]
 custom_minimum_size = Vector2(50, 100)
 layout_mode = 2
 icon = ExtResource("2_y03r5")
 icon_alignment = 1
 expand_icon = true
 
-[node name="FrigateButton2" type="Button" parent="ColorRect/MarginContainer/VBoxContainer/ShipCardContainer/EnemyShipList"]
+[node name="EnemyFrigateButton2" type="Button" parent="ColorRect/MarginContainer/VBoxContainer/ShipCardContainer/EnemyShipList"]
 custom_minimum_size = Vector2(50, 100)
 layout_mode = 2
 icon = ExtResource("2_y03r5")
 icon_alignment = 1
 expand_icon = true
 
-[node name="FrigateButton3" type="Button" parent="ColorRect/MarginContainer/VBoxContainer/ShipCardContainer/EnemyShipList"]
+[node name="EnemyFrigateButton3" type="Button" parent="ColorRect/MarginContainer/VBoxContainer/ShipCardContainer/EnemyShipList"]
 custom_minimum_size = Vector2(50, 100)
 layout_mode = 2
 icon = ExtResource("2_y03r5")
 icon_alignment = 1
 expand_icon = true
 
-[node name="FrigateButton4" type="Button" parent="ColorRect/MarginContainer/VBoxContainer/ShipCardContainer/EnemyShipList"]
+[node name="EnemyFrigateButton4" type="Button" parent="ColorRect/MarginContainer/VBoxContainer/ShipCardContainer/EnemyShipList"]
 custom_minimum_size = Vector2(50, 100)
 layout_mode = 2
 icon = ExtResource("2_y03r5")
 icon_alignment = 1
 expand_icon = true
 
-[node name="FrigateButton5" type="Button" parent="ColorRect/MarginContainer/VBoxContainer/ShipCardContainer/EnemyShipList"]
+[node name="EnemyFrigateButton5" type="Button" parent="ColorRect/MarginContainer/VBoxContainer/ShipCardContainer/EnemyShipList"]
 custom_minimum_size = Vector2(50, 100)
 layout_mode = 2
 icon = ExtResource("2_y03r5")
@@ -220,10 +220,20 @@ text = "-->"
 [connection signal="pressed" from="ColorRect/MarginContainer/VBoxContainer/FleetContainer/PlayerFleet/PlayerSlot3" to="." method="_on_player_slot_3_pressed"]
 [connection signal="pressed" from="ColorRect/MarginContainer/VBoxContainer/FleetContainer/PlayerFleet/PlayerSlot4" to="." method="_on_player_slot_4_pressed"]
 [connection signal="pressed" from="ColorRect/MarginContainer/VBoxContainer/FleetContainer/PlayerFleet/PlayerSlot5" to="." method="_on_player_slot_5_pressed"]
-[connection signal="pressed" from="ColorRect/MarginContainer/VBoxContainer/ShipCardContainer/PlayerShipList/FrigateButton" to="." method="_on_frigate_button_pressed"]
-[connection signal="pressed" from="ColorRect/MarginContainer/VBoxContainer/ShipCardContainer/PlayerShipList/FrigateButton2" to="." method="_on_frigate_button_2_pressed"]
-[connection signal="pressed" from="ColorRect/MarginContainer/VBoxContainer/ShipCardContainer/PlayerShipList/FrigateButton3" to="." method="_on_frigate_button_3_pressed"]
-[connection signal="pressed" from="ColorRect/MarginContainer/VBoxContainer/ShipCardContainer/PlayerShipList/FrigateButton4" to="." method="_on_frigate_button_4_pressed"]
-[connection signal="pressed" from="ColorRect/MarginContainer/VBoxContainer/ShipCardContainer/PlayerShipList/FrigateButton5" to="." method="_on_frigate_button_5_pressed"]
+[connection signal="pressed" from="ColorRect/MarginContainer/VBoxContainer/FleetContainer/EnemyFleet/EnemySlot1" to="." method="_on_enemy_slot_1_pressed"]
+[connection signal="pressed" from="ColorRect/MarginContainer/VBoxContainer/FleetContainer/EnemyFleet/EnemySlot2" to="." method="_on_enemy_slot_2_pressed"]
+[connection signal="pressed" from="ColorRect/MarginContainer/VBoxContainer/FleetContainer/EnemyFleet/EnemySlot3" to="." method="_on_enemy_slot_3_pressed"]
+[connection signal="pressed" from="ColorRect/MarginContainer/VBoxContainer/FleetContainer/EnemyFleet/EnemySlot4" to="." method="_on_enemy_slot_4_pressed"]
+[connection signal="pressed" from="ColorRect/MarginContainer/VBoxContainer/FleetContainer/EnemyFleet/EnemySlot5" to="." method="_on_enemy_slot_5_pressed"]
+[connection signal="pressed" from="ColorRect/MarginContainer/VBoxContainer/ShipCardContainer/PlayerShipList/PlayerFrigateButton" to="." method="_on_player_frigate_button_pressed"]
+[connection signal="pressed" from="ColorRect/MarginContainer/VBoxContainer/ShipCardContainer/PlayerShipList/PlayerFrigateButton2" to="." method="_on_player_frigate_button_2_pressed"]
+[connection signal="pressed" from="ColorRect/MarginContainer/VBoxContainer/ShipCardContainer/PlayerShipList/PlayerFrigateButton3" to="." method="_on_player_frigate_button_3_pressed"]
+[connection signal="pressed" from="ColorRect/MarginContainer/VBoxContainer/ShipCardContainer/PlayerShipList/PlayerFrigateButton4" to="." method="_on_player_frigate_button_4_pressed"]
+[connection signal="pressed" from="ColorRect/MarginContainer/VBoxContainer/ShipCardContainer/PlayerShipList/PlayerFrigateButton5" to="." method="_on_player_frigate_button_5_pressed"]
+[connection signal="pressed" from="ColorRect/MarginContainer/VBoxContainer/ShipCardContainer/EnemyShipList/EnemyFrigateButton" to="." method="_on_enemy_frigate_button_pressed"]
+[connection signal="pressed" from="ColorRect/MarginContainer/VBoxContainer/ShipCardContainer/EnemyShipList/EnemyFrigateButton2" to="." method="_on_enemy_frigate_button_2_pressed"]
+[connection signal="pressed" from="ColorRect/MarginContainer/VBoxContainer/ShipCardContainer/EnemyShipList/EnemyFrigateButton3" to="." method="_on_enemy_frigate_button_3_pressed"]
+[connection signal="pressed" from="ColorRect/MarginContainer/VBoxContainer/ShipCardContainer/EnemyShipList/EnemyFrigateButton4" to="." method="_on_enemy_frigate_button_4_pressed"]
+[connection signal="pressed" from="ColorRect/MarginContainer/VBoxContainer/ShipCardContainer/EnemyShipList/EnemyFrigateButton5" to="." method="_on_enemy_frigate_button_5_pressed"]
 [connection signal="pressed" from="ColorRect/MarginContainer/VBoxContainer/ButtonContainer/BackButton" to="." method="_on_back_button_pressed"]
 [connection signal="pressed" from="ColorRect/MarginContainer/VBoxContainer/ButtonContainer/StartButton" to="." method="_on_start_button_pressed"]

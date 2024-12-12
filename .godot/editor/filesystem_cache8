@@ -1,0 +1,30 @@
+ea4bc82a6ad023ab7ee23ee620429895
+::res://::1734013693
+icon.svg::CompressedTexture2D::8758213908954206854::1733975055::1733975131::1::::<><>::
+README.md::TextFile::-1::1733975055::0::1::::<><>::
+::res://assets/::1733975131
+asteroid1.png::CompressedTexture2D::7136045473161056546::1733975055::1733975131::1::::<><>::
+asteroid_bunch1.png::CompressedTexture2D::5005740071995994319::1733975055::1733975131::1::::<><>::
+frigate.png::CompressedTexture2D::4425996309298235960::1733975055::1733975131::1::::<><>::
+grid_tile.png::CompressedTexture2D::6126705082536178710::1733975055::1733975131::1::::<><>::
+railgun_debris.png::CompressedTexture2D::8925748622933641015::1733975055::1733975131::1::::<><>::
+railgun_shell.png::CompressedTexture2D::4015352808547929314::1733975055::1733975131::1::::<><>::
+Space Background.png::CompressedTexture2D::2110116070771606255::1733975055::1733975131::1::::<><>::
+square.png::CompressedTexture2D::1289126179914816397::1733975055::1733975131::1::::<><>::
+::res://assets/ExtraAssets/::1733975055
+::res://scenes/::1733975135
+fleet_picker.tscn::PackedScene::4096080429446727459::1733975055::0::1::::<><>::res://scripts/fleet_picker.gd<>uid://b4b8ror8b47gu::::res://assets/frigate.png
+frigate.tscn::PackedScene::5060662759623336931::1733975055::0::1::::<><>::res://scripts/frigate.gd<>uid://b4b8ror8b47gu::::res://assets/frigate.png
+main_menu.tscn::PackedScene::4779392211660914775::1733975135::0::1::::<><>::res://scripts/main_menu.gd
+railgun_shell.tscn::PackedScene::7248759504999881964::1733975055::0::1::::<><>::res://scripts/railgun_shell.gd<>uid://bxhcjk4qim0oc::::res://assets/railgun_shell.png
+space_game.tscn::PackedScene::8983032574248296989::1733975055::0::1::::<><>::uid://ctj26435wx3ve::::res://assets/grid_tile.png<>res://scripts/space_game.gd<>uid://5cfkkyubt5gd::::res://assets/Space Background.png<>uid://c8w0vkcg7u47o::::res://assets/asteroid1.png<>res://scripts/Path.gd<>uid://cdk22pvny22ud::::res://assets/asteroid_bunch1.png<>res://scripts/Camera2D.gd<>uid://smpyqetpeftd::::res://assets/square.png<>res://scripts/UI.gd
+::res://scripts/::1733975055
+Camera2D.gd::GDScript::-1::1733975055::0::1::::<>Camera2D<>::
+fleet_picker.gd::GDScript::-1::1733975055::0::1::::<>Control<>::
+frigate.gd::GDScript::-1::1733975055::0::1::::<>CharacterBody2D<>::
+Global.gd::GDScript::-1::1733975055::0::1::::<>Node<>::
+main_menu.gd::GDScript::-1::1733975055::0::1::::<>Control<>::
+Path.gd::GDScript::-1::1733975055::0::1::::<>Node2D<>::
+railgun_shell.gd::GDScript::-1::1733975055::0::1::::<>Area2D<>::
+space_game.gd::GDScript::-1::1733975055::0::1::::<>Node2D<>::
+UI.gd::GDScript::-1::1733975055::0::1::::<>CanvasLayer<>::
