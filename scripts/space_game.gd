@@ -30,7 +30,7 @@ func _process(_delta):
    pass
 
 # --- # --- # --- # --- # Issues -- # --- # --- # --- # --- #
-# - moving mouse off the map causes a silent error with over_object if statement
+# - moving mouse off the map and attempting to move causes crashless error
 # - movement overlay bugs out when it hits edge of the map
 # - movement overlay covers other ships and ships can pass through eachother
 

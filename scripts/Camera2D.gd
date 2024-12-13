@@ -20,7 +20,6 @@ func _process(_delta):
       moveby.y += lerp(7.5, 2.5, (zoom.y - 1) / 4)
    if Input.is_action_pressed("CameraUp"):
       moveby.y -= lerp(7.5, 2.5, (zoom.y - 1) / 4)
-   print(moveby)
    # if user zooms -> zoom in or out and clamp value
    if Input.is_action_just_released("ZoomUp"):
       zoom += Vector2(0.25, 0.25)

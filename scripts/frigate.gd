@@ -14,6 +14,7 @@ var MAX_ACTION : int = 2
 var RAILGUN_RANGE : Vector2i = Vector2i(5, 5)
 
 # movement variables
+var current_position : Vector2i
 var target_position : Vector2
 var current_id_path : Array[Vector2i]
 var current_point_path : PackedVector2Array
@@ -29,6 +30,9 @@ var action_points : int = MAX_ACTION
 @onready var collider = $CollisionShape2D
 
 func _ready():
+   current_position = main.tile_board.local_to_map(position)
+   Global.astar.set_point_solid(current_position)
+   
    add_to_group("Ships")
    if faction == 0:
       add_to_group("PlayerShips")
@@ -62,12 +66,13 @@ func _input(event):
    var mouse_position = get_global_mouse_position()
    var tile = main.tile_board.local_to_map(mouse_position)
    var snapped_mouse = main.tile_board.map_to_local(tile)
-   over_object = true
+   current_position = main.tile_board.local_to_map(global_position)
+   over_object = false
+   # if mouse is in map bounds -> get tile and check if mouse is over object
+   if Global.map_rect.has_point(tile):
+      if Global.astar.is_point_solid(tile):
+         over_object = true
    
-   # check if mouse_position collides with any ships or asteroids
-   over_object = Global.check_collision_with_group("Ships", snapped_mouse)
-   if Global.astar.is_point_solid(tile):
-      over_object = true
    # fire railgun shell
    if event.is_action_pressed("RMB") and is_selected and over_object and action_points > 0:
       is_firing = true
@@ -76,6 +81,8 @@ func _input(event):
       instance_shell()
    # if user clicks while ship selected -> move
    if event.is_action_pressed("RMB") and is_selected and !over_object:
+      print("clearing position from astar: ", current_position)
+      Global.astar.set_point_solid(current_position, 0)     # clear current position from astar
       var id_path = Global.astar.get_id_path(main.tile_board.local_to_map(global_position), tile).slice(1)
          
       # if local path var isnt empty -> set global path var and point path var
@@ -127,6 +134,9 @@ func _physics_process(_delta):
          target_position = main.tile_board.map_to_local(current_id_path.front())
       # else -> stop moving
       else:
+         current_position = main.tile_board.local_to_map(global_position)
+         print("setting position solid: ", current_position)
+         Global.astar.set_point_solid(current_position)
          is_moving = false
          display_movement()
    # end of global position equals next target point if statement ------------
