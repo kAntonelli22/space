@@ -30,13 +30,12 @@ func _process(_delta):
    pass
 
 # --- # --- # --- # --- # Issues -- # --- # --- # --- # --- #
-# - random error message about point out of bounds, one for each ship
+# - moving mouse off the map causes a silent error with over_object if statement
 # - movement overlay bugs out when it hits edge of the map
 # - movement overlay covers other ships and ships can pass through eachother
 
 # --- # --- # --- # --- # Issues -- # --- # --- # --- # --- #
 # --- # --- # --- # --- # Todo List # --- # --- # --- # --- #
-# - add scroll zooming
 # - implement AI and player limited to controlling their own faction
 # - Deployment Phase
 # - Guide Scene

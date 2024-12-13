@@ -3,4 +3,8 @@ res://scenes/fleet_picker.tscn
 res://scenes/frigate.tscn
 res://scenes/railgun_shell.tscn
 res://scenes/space_game.tscn
+res://scripts/fleet_picker.gd
+res://scripts/Global.gd
 res://scripts/frigate.gd
+res://scripts/space_game.gd
+res://scripts/Camera2D.gd

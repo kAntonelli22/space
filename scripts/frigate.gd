@@ -45,7 +45,7 @@ func _ready():
    Global.connect("shell_destroyed", shell_destroyed)
 # end of ready function ------------------------------------------------------
 
-func _process(delta):
+func _process(_delta):
     if health_points == 0:
         print(self.name, " has been destroyed")
         self.queue_free()
