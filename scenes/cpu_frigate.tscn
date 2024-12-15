@@ -1,21 +1,21 @@
-[gd_scene load_steps=4 format=3 uid="uid://cedom18jb85k6"]
+[gd_scene load_steps=4 format=3 uid="uid://d1vusvrccov4y"]
 
-[ext_resource type="Script" path="res://scripts/frigate.gd" id="1_5xke5"]
-[ext_resource type="Texture2D" uid="uid://b4b8ror8b47gu" path="res://assets/frigate.png" id="2_gy4pm"]
+[ext_resource type="Script" path="res://scripts/cpu_frigate.gd" id="1_3h63w"]
+[ext_resource type="Texture2D" uid="uid://b4b8ror8b47gu" path="res://assets/frigate.png" id="2_yf2mx"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_17mit"]
 size = Vector2(9, 16)
 
-[node name="Player" type="CharacterBody2D" groups=["Ships"]]
+[node name="CPU" type="CharacterBody2D" groups=["Ships"]]
 input_pickable = true
-script = ExtResource("1_5xke5")
+script = ExtResource("1_3h63w")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0.5, 0)
 shape = SubResource("RectangleShape2D_17mit")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("2_gy4pm")
+texture = ExtResource("2_yf2mx")
 
 [connection signal="input_event" from="." to="." method="_on_input_event"]
 [connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]

@@ -36,7 +36,11 @@ func _process(_delta):
 
 # --- # --- # --- # --- # Issues -- # --- # --- # --- # --- #
 # --- # --- # --- # --- # Todo List # --- # --- # --- # --- #
-# - implement AI and player limited to controlling their own faction
+# - visible health bars when a ship or object is hit
+# - limit attack directions?
+# - make UI global
+# - create AI movement logic
+# - create AI attack logic
 # - Deployment Phase
 # - Guide Scene
 # - Settings Scene

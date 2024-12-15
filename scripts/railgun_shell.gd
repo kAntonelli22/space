@@ -5,30 +5,38 @@ var origin
 var direction : Vector2
 var speed : int = 400
 var hit_target : bool = false
+var miss : bool = false
+var percent : float
+
+var damage : int = 1
 
 @onready var sprite = $Sprite2D
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
    self.rotation += direction.angle()
+   
+   # roll damage with chance of crit if roll is half of percent
+   var roll = randi_range(0, 100)
+   print("percent: ", percent, "roll: ", roll)
+   if roll <= percent / 2:
+      damage *= 2
+      print("critical hit")
+   elif roll > percent:
+      miss = true
+      damage = 0
+      print("miss")
+   else: # dont change sprite if shell misses
+      print("hit")
 
 # called on collision with objects or ships
 func _on_body_entered(body):
-   if body == origin:
-      return
-   Global.obj_hit.emit(body, self, origin)
-   
-   # roll damage with 25% chance of crit or miss and 50% chance of hit
-   var roll = randi_range(0, 3)
-   if roll == 3 and "health_points" in body:
-      body.health_points -= 2
-   elif roll != 0 and "health_points" in body:
-      body.health_points -= 1
-
-   hit_target = true
-   position = body.position
-   $Sprite2D.texture = preload("res://assets/railgun_debris.png")
-   $DestroyTimer.start()
+   if body != origin:
+      Global.obj_hit.emit(body, self, damage, origin)
+      if !miss:
+         position = body.position
+         $Sprite2D.texture = preload("res://assets/railgun_debris.png")
+         $DestroyTimer.start()
 
 # handles movement of shell
 func _physics_process(delta):

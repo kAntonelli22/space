@@ -26,7 +26,7 @@ var action_points : int = MAX_ACTION
 
 # node references
 @onready var main = get_parent()
-@onready var ship_sprite = $Sprite2D
+@onready var sprite = $Sprite2D
 @onready var collider = $CollisionShape2D
 
 func _ready():
@@ -75,13 +75,15 @@ func _input(event):
    
    # fire railgun shell
    if event.is_action_pressed("RMB") and is_selected and over_object and action_points > 0:
+      var target = main.tile_board.local_to_map(get_global_mouse_position())
+      var hit_chance = 100 - (main.tile_board.local_to_map(global_position).distance_to(target) * 10)
+      print(hit_chance)
       is_firing = true
       action_points -= 1
       Global.attributes_changed.emit(self, null)
-      instance_shell()
+      Global.instance_shell(target, self, hit_chance)
    # if user clicks while ship selected -> move
    if event.is_action_pressed("RMB") and is_selected and !over_object:
-      print("clearing position from astar: ", current_position)
       Global.astar.set_point_solid(current_position, 0)     # clear current position from astar
       var id_path = Global.astar.get_id_path(main.tile_board.local_to_map(global_position), tile).slice(1)
          
@@ -115,30 +117,8 @@ func _physics_process(_delta):
    if is_moving == false:
       target_position = main.tile_board.map_to_local(current_id_path.front())
       is_moving = true
-   # end of not moving if statement ------------------------------------------
-   
-   # move global position of ship towards target
-   global_position = global_position.move_toward(target_position, 2)
-   # rotate the sprite to face the target position
-   if global_position.direction_to(target_position) != Vector2(0, 0):
-      $Sprite2D.look_at(global_position - global_position.direction_to(target_position))
-      $Sprite2D.rotation += deg_to_rad(-90)
-
-   # if global position equals next target point -> remove point from path
-   if global_position == target_position:
-      current_id_path.pop_front()
-      current_point_path = current_point_path.slice(1)
-      
-      # if path isnt empty -> get new target point
-      if !current_id_path.is_empty():
-         target_position = main.tile_board.map_to_local(current_id_path.front())
-      # else -> stop moving
-      else:
-         current_position = main.tile_board.local_to_map(global_position)
-         print("setting position solid: ", current_position)
-         Global.astar.set_point_solid(current_position)
-         is_moving = false
-         display_movement()
+   # move the ships sprite
+   Global.move_ship(self)
    # end of global position equals next target point if statement ------------
 # end of sprite movement function --------------------------------------------
 
@@ -153,7 +133,7 @@ func _on_input_event(_viewport, event, _shape_idx):
          Global.current_selected = self
          is_selected = true
          # change current cell on movement overlay
-         display_movement()
+         Global.display_movement(main.tile_board.local_to_map(position), movement_points, 0)
       # end of ship not selected if statement --------------------------------
    # end of user click if statement ------------------------------------------
 # end of ship selection function --------------------------------------------
@@ -164,49 +144,11 @@ func select_signal(_obj_selected : Object, obj_deselected):
       main.tile_overlay.clear()
       is_selected = false
 
-func display_movement():
-   var start_coord : Vector2i = main.tile_board.local_to_map(position)
-   var tile_queue : Array
-   var id_path : Array[Vector2i]
-   
-   # get all tiles in a square around ship based on movement points, +1 offset
-   for i in range(-movement_points, movement_points + 1):
-         for j in range(-movement_points, movement_points + 1):
-            var tile_coords : Vector2i = Vector2i(start_coord.x + j, start_coord.y + i)
-            tile_queue.append(tile_coords)
-   
-   # fill in tiles
-   while tile_queue:
-      var current_tile : Vector2i = tile_queue.pop_front()
-      id_path = []
-      id_path = Global.astar.get_id_path(start_coord, current_tile)
-      id_path.pop_front()        # remove the start coord from path
-      
-      # if id path size is less than movement points and current tile isnt solid -> apply movement overlay
-      if id_path.size() <= movement_points and !Global.astar.is_point_solid(current_tile):
-         main.tile_overlay.set_cell(current_tile, 3, Vector2i(0, 0))
-   # end of tile queue while loop --------------------------------------------
-# end of display movement function -------------------------------------------
-
-func object_hit(_object_hit : Object, _weapon : Object, _origin : Object):
+func object_hit(_object_hit : Object, _weapon : Object, _damage : int, _origin : Object):
    pass
    
 func shell_destroyed(_weapon : Object, _origin : Object):
    is_firing = false
-
-func instance_shell():
-   # get the mouse position, convert it to grid, then back to global
-   var target = main.tile_board.local_to_map(get_global_mouse_position())
-   # ensure that shell is fired within range
-   if target == Vector2i(position) or target - RAILGUN_RANGE < Vector2i(0, 0):
-      return
-   target = main.tile_board.map_to_local(target)
-   # instantiate a new railgun shell and set its variables, then add it to the scene
-   var shell = Global.railgun_shell.instantiate()
-   shell.origin = self
-   shell.direction = global_position.direction_to(target)
-   shell.position = position
-   main.add_child(shell)
 
 # refresh ship actions and logic after end of turn
 func next_turn():
@@ -215,5 +157,5 @@ func next_turn():
    action_points = MAX_ACTION
    Global.attributes_changed.emit(self, null)
    if is_selected:
-      display_movement()
+      Global.display_movement(main.tile_board.local_to_map(position), movement_points, 0)
 # end of next turn button ----------------------------------------------------
