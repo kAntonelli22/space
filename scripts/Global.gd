@@ -121,7 +121,7 @@ func instance_shell(target, ship, percent):
    shell.percent = percent
    main.add_child(shell)
 
-func display_movement(start_coord, movement_points, faction):
+func display_movement(start_coord, movement_points, _faction):
    var tile_queue : Array
    var id_path : Array[Vector2i]
    # get all tiles in a square around ship based on movement points, +1 offset
@@ -170,18 +170,19 @@ func move_ship(ship):
 
 # display text
 func popup(text, position, color):
-   var popup = text_popup.instantiate()
-   main.add_child(popup)
-   popup.label.text = text
-   popup.position = position
-   popup.label.add_theme_color_override("font_color", color)
+   print(text)
+   var popup_instance = text_popup.instantiate()
+   main.add_child(popup_instance)
+   popup_instance.label.text = text
+   popup_instance.position = position
+   popup_instance.label.add_theme_color_override("font_color", color)
 
 # called by map node after all new instances that access signals have been added
 func connect_signals():
    connect("obj_hit", create_damage_popup)
 
 # signal functions
-func create_damage_popup(object, weapon, damage, sender):
+func create_damage_popup(object, _weapon, damage, _sender):
    if damage == 0:
       popup("Miss!", object.position, Color.GRAY)
    else:

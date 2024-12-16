@@ -18,21 +18,17 @@ func _ready():
    
    # roll damage with chance of crit if roll is half of percent
    var roll = randi_range(0, 100)
-   print("percent: ", percent, "roll: ", roll)
    if roll <= percent / 2:
       damage *= 2
-      print("critical hit")
    elif roll > percent:
       miss = true
       damage = 0
-      print("miss")
-   else: # dont change sprite if shell misses
-      print("hit")
 
 # called on collision with objects or ships
 func _on_body_entered(body):
    if body != origin:
       Global.obj_hit.emit(body, self, damage, origin)
+      hit_target = true
       if !miss:
          position = body.position
          $Sprite2D.texture = preload("res://assets/railgun_debris.png")
@@ -40,9 +36,9 @@ func _on_body_entered(body):
 
 # handles movement of shell
 func _physics_process(delta):
-   if !hit_target:
+   if !hit_target or miss:
       position += direction * speed * delta
-   else:
+   elif hit_target and !miss:
       # slow down movement and fade away
       position += direction * (speed / 10.0) * delta
       sprite.modulate.a -= 0.05

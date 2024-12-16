@@ -30,12 +30,12 @@ func _process(_delta):
    pass
 
 # --- # --- # --- # --- # Issues -- # --- # --- # --- # --- #
-# - moving mouse off the map and attempting to move causes crashless error
 # - movement overlay bugs out when it hits edge of the map
-# - movement overlay covers other ships and ships can pass through eachother
+# - damage is not being applied to ships
 
 # --- # --- # --- # --- # Issues -- # --- # --- # --- # --- #
 # --- # --- # --- # --- # Todo List # --- # --- # --- # --- #
+# - add one pixel outline to the tilemap
 # - visible health bars when a ship or object is hit
 # - limit attack directions?
 # - make UI global

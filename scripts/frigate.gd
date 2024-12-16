@@ -65,13 +65,14 @@ func _input(event):
    
    var mouse_position = get_global_mouse_position()
    var tile = main.tile_board.local_to_map(mouse_position)
-   var snapped_mouse = main.tile_board.map_to_local(tile)
    current_position = main.tile_board.local_to_map(global_position)
    over_object = false
    # if mouse is in map bounds -> get tile and check if mouse is over object
    if Global.map_rect.has_point(tile):
       if Global.astar.is_point_solid(tile):
          over_object = true
+   else: # dont do anything if the user has clicked outside of the map
+      return
    
    # fire railgun shell
    if event.is_action_pressed("RMB") and is_selected and over_object and action_points > 0:
