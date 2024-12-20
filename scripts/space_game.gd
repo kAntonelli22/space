@@ -38,9 +38,17 @@ func _process(_delta):
 # - add one pixel outline to the tilemap
 # - visible health bars when a ship or object is hit
 # - limit attack directions?
-# - make UI global
-# - create AI movement logic
-# - create AI attack logic
+# - - railgun, torpedo, and pdc attack buttons
+# - - attack range and area overlay
+
+# - create seperate ingame UI scene?
+# - on player end turn emit signal to global
+# - - ai move function that takes faction and moves each ship
+# - - - ships move to closest position that would allow it to fire on the weakest ship
+# - - ai fire function that loops through ships and fires
+# - - - targets ship with the highest damage - health?
+
+# - move code from path.gd to Global movement
 # - Deployment Phase
 # - Guide Scene
 # - Settings Scene

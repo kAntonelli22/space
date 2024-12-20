@@ -18,10 +18,10 @@ func _process(_delta):
    
 func _draw():
    
-   draw_paths(player_ships, Color.BLUE)
-   draw_paths(friendly_ships, Color.GREEN)
-   draw_paths(neutral_ships, Color.GRAY)
-   draw_paths(enemy_ships, Color.RED)
+   draw_paths(player_ships, Color.SLATE_BLUE)
+   draw_paths(friendly_ships, Color.MEDIUM_SEA_GREEN)
+   draw_paths(neutral_ships, Color.DARK_GRAY)
+   draw_paths(enemy_ships, Color.INDIAN_RED)
 # end of draw function ------------------------------------------------------
 
 func draw_paths(group : Array, color: Color):
@@ -32,5 +32,5 @@ func draw_paths(group : Array, color: Color):
       if !ship.current_point_path.size() < 2:
          var point_path : PackedVector2Array = ship.current_point_path
          point_path.slice(1).insert(0, ship.position)
-         draw_polyline(point_path, color)
+         draw_polyline(point_path, color, 3)
 # end of draw paths function -------------------------------------------------

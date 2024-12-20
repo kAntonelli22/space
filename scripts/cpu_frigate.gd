@@ -24,7 +24,7 @@ var action_points : int = MAX_ACTION
 
 # node references
 @onready var main = get_parent()
-@onready var ship_sprite = $Sprite2D
+@onready var sprite = $Sprite2D
 @onready var collider = $CollisionShape2D
 
 func _ready():
@@ -56,7 +56,7 @@ func _process(_delta):
         self.queue_free()
 
 # handles movement logic, activates when any event activates
-func _input(event):
+func _input(_event):
    # do not allow inputs if ship is currently moving or firing
    if is_moving or is_firing:
       return

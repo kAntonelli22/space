@@ -1,12 +1,12 @@
 extends Node # singleton global script
 
-# scenes
+# ship scenes for instancing - "ship_name": [player_ship, ai_ship]
 var ships = {
-   "frigate": preload("res://scenes/frigate.tscn"),
-   "destroyer": preload("res://scenes/frigate.tscn"),
-   "cruiser": preload("res://scenes/frigate.tscn"),
-   "battlecruiser": preload("res://scenes/frigate.tscn"),
-   "battleship": preload("res://scenes/frigate.tscn"),
+   "frigate": [preload("res://scenes/frigate.tscn"), preload("res://scenes/cpu_frigate.tscn")],
+   "destroyer": [preload("res://scenes/frigate.tscn"), preload("res://scenes/cpu_frigate.tscn")],
+   "cruiser": [preload("res://scenes/frigate.tscn"), preload("res://scenes/cpu_frigate.tscn")],
+   "battlecruiser": [preload("res://scenes/frigate.tscn"), preload("res://scenes/cpu_frigate.tscn")],
+   "battleship": [preload("res://scenes/frigate.tscn"), preload("res://scenes/cpu_frigate.tscn")],
 }
 var ship_sprites = {
    "frigate": preload("res://assets/frigate.png"),
@@ -100,7 +100,12 @@ func deploy_fleet(fleet : Array, faction : int, coords : Vector2):
 
 # creates a new instance of a ship, sets its position, names it, sets its faction, and adds it to the scene
 func instance_ship(map, ship_type : String, faction : int, ship_position : Vector2i):
-   var ship = Global.ships[ship_type].instantiate()
+   var ship
+   ship = Global.ships[ship_type][0].instantiate()
+   #if faction == 0:
+      #ship = Global.ships[ship_type][0].instantiate()
+   #else:
+      #ship = Global.ships[ship_type][1].instantiate()
    ship.name = ship_type
    ship.position = map.tile_board.map_to_local(ship_position)
    ship.faction = faction
@@ -170,7 +175,6 @@ func move_ship(ship):
 
 # display text
 func popup(text, position, color):
-   print(text)
    var popup_instance = text_popup.instantiate()
    main.add_child(popup_instance)
    popup_instance.label.text = text
@@ -180,6 +184,7 @@ func popup(text, position, color):
 # called by map node after all new instances that access signals have been added
 func connect_signals():
    connect("obj_hit", create_damage_popup)
+   connect("next_turn", ai_move)
 
 # signal functions
 func create_damage_popup(object, _weapon, damage, _sender):
@@ -187,3 +192,10 @@ func create_damage_popup(object, _weapon, damage, _sender):
       popup("Miss!", object.position, Color.GRAY)
    else:
       popup(str(damage), object.position, Color.RED)
+
+# friendly ship ai movement function
+func ai_move():
+   pass
+
+func ai_attack():
+   pass

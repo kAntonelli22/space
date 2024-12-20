@@ -4,14 +4,13 @@
 [ext_resource type="Texture2D" uid="uid://b4b8ror8b47gu" path="res://assets/frigate.png" id="2_yf2mx"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_17mit"]
-size = Vector2(9, 16)
+size = Vector2(24, 24)
 
 [node name="CPU" type="CharacterBody2D" groups=["Ships"]]
 input_pickable = true
 script = ExtResource("1_3h63w")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0.5, 0)
 shape = SubResource("RectangleShape2D_17mit")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
