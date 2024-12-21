@@ -1,6 +1,5 @@
-res://scenes/ship.tscn
 res://scenes/main_menu.tscn
-res://scripts/frigate.gd
+res://scripts/Global.gd
 res://scripts/ship.gd
 res://scenes/fleet_picker.tscn
 res://scenes/frigate.tscn
@@ -8,4 +7,6 @@ res://scenes/cpu_frigate.tscn
 res://scenes/railgun_shell.tscn
 res://scenes/space_game.tscn
 res://scenes/popup_container.tscn
-res://scripts/cpu_frigate.gd
+res://scenes/ship.tscn
+res://scripts/frigate.gd
+res://scripts/space_game.gd

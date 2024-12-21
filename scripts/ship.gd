@@ -13,7 +13,7 @@ var MAX_ACTION : int = 2
 var RAILGUN_RANGE : Vector2i = Vector2i(5, 5)
 
 # movement variables
-var current_position : Vector2i
+var current_position : Vector2i     # main.tile_board.local_to_map(position)
 var target_position : Vector2
 var current_id_path : Array[Vector2i]
 var current_point_path : PackedVector2Array
@@ -50,21 +50,35 @@ func _ready() -> void:
 # end of ready function ------------------------------------------------------
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
    pass
+   
+func _physics_process(delta):
+   # if global path var is empty -> no movement neccessary, exit early
+   if current_id_path.is_empty(): return
+   
+   # if not moving -> get next point in path, set is_moving
+   if is_moving == false:
+      target_position = main.tile_board.map_to_local(current_id_path.front())
+      is_moving = true
+   move_ship()  # move the ships sprite
+# end of sprite movement function --------------------------------------------
 
 func display_movement():
    var tile_queue : Array
    var id_path : Array[Vector2i]
+   
    # get all tiles in a square around ship based on movement points, +1 offset
    for i in range(-movement_points, movement_points + 1):
          for j in range(-movement_points, movement_points + 1):
-            var tile_coords : Vector2i = Vector2i(current_position.x + j, current_position.y + i)
+            var tile_coords : Vector2i = Vector2i(current_position.x + i, current_position.y + j)
             tile_queue.append(tile_coords)
    # end of for loop ---------------------------------------------------------
    # fill in tiles
    while tile_queue:
       var current_tile : Vector2i = tile_queue.pop_front()
+      if !Global.map_rect.has_point(current_tile):
+         continue
       id_path = []
       id_path = Global.astar.get_id_path(current_position, current_tile)
       id_path.pop_front()        # remove the start coord from path
@@ -96,7 +110,7 @@ func move_ship():
          is_moving = false
          current_position = main.tile_board.local_to_map(global_position)
          Global.astar.set_point_solid(current_position)
-         Global.display_movement(main.tile_board.local_to_map(position), movement_points, 0)
+         display_movement()
    # end of global position equals next target point if statement ------------
 # end of move ship function --------------------------------------------------
 
@@ -107,7 +121,7 @@ func next_turn():
    action_points = MAX_ACTION
    Global.attributes_changed.emit(self, null)
    if is_selected:
-      Global.display_movement(main.tile_board.local_to_map(position), movement_points, 0)
+      display_movement()
 # end of next turn button ----------------------------------------------------
 
 # deselect ship if other ship emits select signal
@@ -119,6 +133,8 @@ func select_signal(_obj_selected : Object, obj_deselected):
 func object_hit(obj : Object, _weapon : Object, damage : int, _origin : Object):
    if obj == self: health_points -= damage
    if health_points <= 0: queue_free()
+   if damage == 0: Global.popup("Miss!", position, Color.GRAY)
+   else: Global.popup(str(damage), position, Color.RED)
    
 func shell_destroyed(_weapon : Object, _origin : Object):
    is_firing = false

@@ -30,7 +30,7 @@ func _process(_delta):
    pass
 
 # --- # --- # --- # --- # Issues -- # --- # --- # --- # --- #
-# - movement overlay bugs out when it hits edge of the map
+# - 
 
 # --- # --- # --- # --- # Issues -- # --- # --- # --- # --- #
 # --- # --- # --- # --- # Todo List # --- # --- # --- # --- #

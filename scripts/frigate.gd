@@ -54,15 +54,8 @@ func _input(event):
 # end of movement logic function ---------------------------------------------
 
 # handles sprite movement
-func _physics_process(_delta):
-   # if global path var is empty -> no movement neccessary, exit early
-   if current_id_path.is_empty(): return
-   
-   # if not moving -> get next point in path, set is_moving
-   if is_moving == false:
-      target_position = main.tile_board.map_to_local(current_id_path.front())
-      is_moving = true
-   move_ship()  # move the ships sprite
+func _physics_process(delta):
+   super._physics_process(delta)
 # end of sprite movement function --------------------------------------------
 
 # handles ship selection, activates when event occurs in ship bounds
