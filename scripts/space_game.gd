@@ -31,7 +31,6 @@ func _process(_delta):
 
 # --- # --- # --- # --- # Issues -- # --- # --- # --- # --- #
 # - movement overlay bugs out when it hits edge of the map
-# - damage is not being applied to ships
 
 # --- # --- # --- # --- # Issues -- # --- # --- # --- # --- #
 # --- # --- # --- # --- # Todo List # --- # --- # --- # --- #
@@ -49,9 +48,7 @@ func _process(_delta):
 # - - - targets ship with the highest damage - health?
 
 # - move code from path.gd to Global movement
-# - Deployment Phase
-# - Guide Scene
-# - Settings Scene
+# - seperate global ship functions into ship singleton
 
 # --- # --- # --- # --- # Todo List # --- # --- # --- # --- # 
 # --- # --- # --- # --- # Major --- # --- # --- # --- # --- #
@@ -59,6 +56,9 @@ func _process(_delta):
 # - UI and Menu overhall
 # - different ships
 # - animations, particle effects, thrusters, nicer overlay
+# - Deployment Phase
+# - Guide Scene
+# - Settings Scene
 
 # --- # --- # --- # --- # Major --- # --- # --- # --- # --- #
 # --- # --- # --- # --- # Control - # --- # --- # --- # --- #

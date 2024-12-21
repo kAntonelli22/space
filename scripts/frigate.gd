@@ -1,58 +1,11 @@
-extends CharacterBody2D
-
-# ship logic variables
-var faction : int = 0
-var is_selected : bool = false
-var is_moving : bool = false
-var is_firing : bool = false
-
-# constant variables
-var MAX_HEALTH : int = 10
-var MAX_MOVEMENT : int = 4
-var MAX_ACTION : int = 2
-var RAILGUN_RANGE : Vector2i = Vector2i(5, 5)
-
-# movement variables
-var current_position : Vector2i
-var target_position : Vector2
-var current_id_path : Array[Vector2i]
-var current_point_path : PackedVector2Array
-
-# assorted variables
-var health_points : int = MAX_HEALTH
-var movement_points : int = MAX_MOVEMENT
-var action_points : int = MAX_ACTION
-
-# node references
-@onready var main = get_parent()
-@onready var sprite = $Sprite2D
-@onready var collider = $CollisionShape2D
+extends "res://scripts/ship.gd"
 
 func _ready():
-   current_position = main.tile_board.local_to_map(position)
-   Global.astar.set_point_solid(current_position)
-   
-   add_to_group("Ships")
-   if faction == 0:
-      add_to_group("PlayerShips")
-   elif faction == 1:
-      add_to_group("EnemyShips")
-   elif faction == 2:
-      add_to_group("AlliedShips")
-   elif faction == 3:
-      add_to_group("NeutralShips")
-      
-   Global.connect("next_turn", next_turn)
-   Global.connect("obj_selected", select_signal)
-   Global.connect("obj_hit", object_hit)
-   Global.connect("shell_destroyed", shell_destroyed)
+   super._ready()    # call ready function of ship class
 # end of ready function ------------------------------------------------------
 
-func _process(_delta):
-    if health_points == 0:    # ship has been destroyed by a normal hit
-        self.queue_free()
-    elif health_points < 0:   # ship has been destroyed by a critical hit
-        self.queue_free()
+func _process(delta):
+   super._process(delta)    # call ready function of ship class
 
 # handles movement logic, activates when any event activates
 func _input(event):
@@ -109,7 +62,7 @@ func _physics_process(_delta):
    if is_moving == false:
       target_position = main.tile_board.map_to_local(current_id_path.front())
       is_moving = true
-   Global.move_ship(self)  # move the ships sprite
+   move_ship()  # move the ships sprite
 # end of sprite movement function --------------------------------------------
 
 # handles ship selection, activates when event occurs in ship bounds
@@ -119,28 +72,6 @@ func _on_input_event(_viewport, event, _shape_idx):
       if !is_selected:
          Global.obj_selected.emit(self, Global.current_selected)
          Global.current_selected = self
-         Global.display_movement(current_position, movement_points, 0)
+         display_movement()
          is_selected = true
 # end of ship selection function --------------------------------------------
-
-# refresh ship actions and logic after end of turn
-func next_turn():
-   # reset movement and action points
-   movement_points = MAX_MOVEMENT
-   action_points = MAX_ACTION
-   Global.attributes_changed.emit(self, null)
-   if is_selected:
-      Global.display_movement(main.tile_board.local_to_map(position), movement_points, 0)
-# end of next turn button ----------------------------------------------------
-
-# deselect ship if other ship emits select signal
-func select_signal(_obj_selected : Object, obj_deselected):
-   if is_selected and obj_deselected == self:
-      main.tile_overlay.clear()
-      is_selected = false
-      
-func object_hit(obj : Object, weapon : Object, damage : int, _origin : Object):
-   if obj == self: health_points -= damage
-   
-func shell_destroyed(_weapon : Object, _origin : Object):
-   is_firing = false
