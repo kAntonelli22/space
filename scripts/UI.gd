@@ -26,8 +26,8 @@ func _on_pause_button_pressed():
    get_tree().paused = true
 
 func _on_turn_button_pressed():
-   get_parent().turn_counter += 1
-   $BottomRight/TurnCount.text = str("Turn Count: ", get_parent().turn_counter)
+   main_node.turn_counter += 1
+   $BottomRight/TurnCount.text = str("Turn Count: ", main_node.turn_counter)
    Global.next_turn.emit()
 
 # toggles and updates the bottom left info panel with the selected object
@@ -52,3 +52,14 @@ func connect_signals():
    Global.connect("obj_selected", update_info_panel)
    Global.connect("obj_deselected", deselect_signal)
    Global.connect("attributes_changed", update_info_panel)
+
+func _on_torpedo_pressed() -> void:
+   print("torpedo button pressed")
+   
+
+func _on_railgun_pressed() -> void:
+   print("railgun button pressed")
+
+
+func _on_pdc_pressed() -> void:
+   print("pdc button pressed")

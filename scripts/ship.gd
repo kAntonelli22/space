@@ -53,7 +53,7 @@ func _ready() -> void:
 func _process(_delta: float) -> void:
    pass
    
-func _physics_process(delta):
+func _physics_process(_delta):
    # if global path var is empty -> no movement neccessary, exit early
    if current_id_path.is_empty(): return
    

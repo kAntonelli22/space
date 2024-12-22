@@ -1,14 +1,13 @@
-[gd_scene load_steps=22 format=4 uid="uid://d08ph7trk3wkr"]
+[gd_scene load_steps=15 format=4 uid="uid://d08ph7trk3wkr"]
 
 [ext_resource type="Texture2D" uid="uid://ctj26435wx3ve" path="res://assets/grid_tile.png" id="1_3651t"]
 [ext_resource type="Script" path="res://scripts/space_game.gd" id="1_p277o"]
 [ext_resource type="Texture2D" uid="uid://5cfkkyubt5gd" path="res://assets/Space Background.png" id="2_uawoo"]
 [ext_resource type="Texture2D" uid="uid://c8w0vkcg7u47o" path="res://assets/asteroid1.png" id="4_4psgh"]
-[ext_resource type="Script" path="res://scripts/Path.gd" id="5_2wfu6"]
 [ext_resource type="Texture2D" uid="uid://cdk22pvny22ud" path="res://assets/asteroid_bunch1.png" id="5_lj82x"]
 [ext_resource type="Script" path="res://scripts/Camera2D.gd" id="5_rxdvn"]
 [ext_resource type="Texture2D" uid="uid://smpyqetpeftd" path="res://assets/square.png" id="6_2v53n"]
-[ext_resource type="Script" path="res://scripts/UI.gd" id="10_ysnkh"]
+[ext_resource type="PackedScene" uid="uid://c7mpekeyrxs4t" path="res://scenes/ui.tscn" id="9_m2w62"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_rkt8w"]
 texture = ExtResource("1_3651t")
@@ -85,24 +84,6 @@ sources/1 = SubResource("TileSetAtlasSource_wmfsg")
 sources/2 = SubResource("TileSetAtlasSource_v0epe")
 sources/3 = SubResource("TileSetAtlasSource_wof14")
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ohicy"]
-bg_color = Color(0.160784, 0.160784, 0.211765, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jdbxc"]
-bg_color = Color(1, 0.241742, 0.321382, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_woi3u"]
-bg_color = Color(0.219608, 0.243137, 0.317647, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_csdvv"]
-bg_color = Color(0.341176, 0.321569, 0.905882, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rrnwk"]
-bg_color = Color(0.160784, 0.160784, 0.211765, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_uxpn4"]
-bg_color = Color(0, 0.803922, 0.384314, 1)
-
 [sub_resource type="GDScript" id="GDScript_f7tj8"]
 script/source = "extends CanvasLayer
 
@@ -135,6 +116,14 @@ func _on_menu_button_pressed():
 [node name="SpaceGame" type="Node2D"]
 script = ExtResource("1_p277o")
 
+[node name="Outline" type="ColorRect" parent="."]
+z_index = -1
+offset_left = -1.0
+offset_top = -1.0
+offset_right = 641.0
+offset_bottom = 641.0
+color = Color(0.701961, 0.701961, 0.701961, 1)
+
 [node name="Background" type="TextureRect" parent="."]
 z_index = -1
 offset_right = 640.0
@@ -152,144 +141,11 @@ tile_set = SubResource("TileSet_75x0n")
 use_parent_material = true
 tile_set = SubResource("TileSet_75x0n")
 
-[node name="Path" type="Node2D" parent="."]
-script = ExtResource("5_2wfu6")
-
 [node name="Camera2D" type="Camera2D" parent="."]
 zoom = Vector2(1.5, 1.5)
 script = ExtResource("5_rxdvn")
 
-[node name="UI" type="CanvasLayer" parent="."]
-script = ExtResource("10_ysnkh")
-
-[node name="TopLeft" type="ColorRect" parent="UI"]
-offset_right = 64.0
-offset_bottom = 32.0
-color = Color(0.160784, 0.160784, 0.211765, 1)
-
-[node name="PauseButton" type="Button" parent="UI/TopLeft"]
-layout_mode = 0
-offset_right = 64.0
-offset_bottom = 32.0
-text = "Menu"
-
-[node name="TopRight" type="ColorRect" parent="UI"]
-offset_left = 512.0
-offset_right = 640.0
-offset_bottom = 128.0
-color = Color(0.160784, 0.160784, 0.211765, 1)
-
-[node name="Left Side" type="VBoxContainer" parent="UI"]
-anchors_preset = -1
-anchor_bottom = 0.0125
-offset_top = 64.0
-offset_right = 64.0
-offset_bottom = 504.0
-size_flags_horizontal = 0
-size_flags_vertical = 0
-theme_override_constants/separation = 32
-alignment = 2
-
-[node name="Left1" type="ColorRect" parent="UI/Left Side"]
-custom_minimum_size = Vector2(0, 64)
-layout_mode = 2
-color = Color(0.160784, 0.160784, 0.211765, 1)
-
-[node name="Left2" type="ColorRect" parent="UI/Left Side"]
-custom_minimum_size = Vector2(0, 64)
-layout_mode = 2
-color = Color(0.160784, 0.160784, 0.211765, 1)
-
-[node name="Left3" type="ColorRect" parent="UI/Left Side"]
-custom_minimum_size = Vector2(0, 64)
-layout_mode = 2
-color = Color(0.160784, 0.160784, 0.211765, 1)
-
-[node name="BottomLeft" type="ColorRect" parent="UI"]
-visible = false
-offset_top = 544.0
-offset_right = 192.0
-offset_bottom = 640.0
-color = Color(0.160784, 0.160784, 0.211765, 1)
-
-[node name="VBoxContainer" type="VBoxContainer" parent="UI/BottomLeft"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_constants/separation = 0
-
-[node name="Label" type="Label" parent="UI/BottomLeft/VBoxContainer"]
-layout_mode = 2
-text = "Name"
-
-[node name="Container" type="VBoxContainer" parent="UI/BottomLeft/VBoxContainer"]
-layout_mode = 2
-size_flags_vertical = 3
-theme_override_constants/separation = 0
-alignment = 2
-
-[node name="HealthBar" type="ProgressBar" parent="UI/BottomLeft/VBoxContainer/Container"]
-custom_minimum_size = Vector2(0, 6)
-layout_mode = 2
-theme_override_styles/background = SubResource("StyleBoxFlat_ohicy")
-theme_override_styles/fill = SubResource("StyleBoxFlat_jdbxc")
-step = 1.0
-value = 50.0
-
-[node name="MovementBar" type="ProgressBar" parent="UI/BottomLeft/VBoxContainer/Container"]
-custom_minimum_size = Vector2(0, 6)
-layout_mode = 2
-theme_override_styles/background = SubResource("StyleBoxFlat_woi3u")
-theme_override_styles/fill = SubResource("StyleBoxFlat_csdvv")
-max_value = 4.0
-step = 1.0
-value = 4.0
-
-[node name="ActionBar" type="ProgressBar" parent="UI/BottomLeft/VBoxContainer/Container"]
-layout_mode = 2
-theme_override_styles/background = SubResource("StyleBoxFlat_rrnwk")
-theme_override_styles/fill = SubResource("StyleBoxFlat_uxpn4")
-step = 1.0
-value = 75.0
-
-[node name="BottomMiddle" type="ColorRect" parent="UI"]
-offset_left = 224.0
-offset_top = 576.0
-offset_right = 480.0
-offset_bottom = 640.0
-color = Color(0.160784, 0.160784, 0.211765, 1)
-
-[node name="BottomRight" type="ColorRect" parent="UI"]
-offset_left = 512.0
-offset_top = 576.0
-offset_right = 640.0
-offset_bottom = 640.0
-color = Color(0.160784, 0.160784, 0.211765, 1)
-
-[node name="TurnCount" type="Label" parent="UI/BottomRight"]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -52.0
-offset_top = -24.0
-offset_right = 53.0
-grow_horizontal = 2
-grow_vertical = 2
-text = "Turn Count: 0"
-
-[node name="TurnButton" type="Button" parent="UI/BottomRight"]
-layout_mode = 0
-offset_top = 40.0
-offset_right = 128.0
-offset_bottom = 64.0
-theme_override_font_sizes/font_size = 11
-text = "End Turn"
+[node name="UI" parent="." instance=ExtResource("9_m2w62")]
 
 [node name="PauseMenu" type="CanvasLayer" parent="."]
 process_mode = 2
@@ -342,8 +198,6 @@ text = "Settings"
 layout_mode = 2
 text = "Return to Menu"
 
-[connection signal="pressed" from="UI/TopLeft/PauseButton" to="UI" method="_on_pause_button_pressed"]
-[connection signal="pressed" from="UI/BottomRight/TurnButton" to="UI" method="_on_turn_button_pressed"]
 [connection signal="pressed" from="PauseMenu/ColorRect/MarginContainer/VBoxContainer/ResumeButton" to="PauseMenu" method="_on_resume_button_pressed"]
 [connection signal="pressed" from="PauseMenu/ColorRect/MarginContainer/VBoxContainer/GuideButton" to="PauseMenu" method="_on_guide_button_pressed"]
 [connection signal="pressed" from="PauseMenu/ColorRect/MarginContainer/VBoxContainer/SettingsButton" to="PauseMenu" method="_on_settings_button_pressed"]

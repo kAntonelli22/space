@@ -2,11 +2,11 @@ extends Node # singleton global script
 
 # ship scenes for instancing - "ship_name": [player_ship, ai_ship]
 var ships = {
-   "frigate": [preload("res://scenes/frigate.tscn"), preload("res://scenes/cpu_frigate.tscn")],
-   "destroyer": [preload("res://scenes/frigate.tscn"), preload("res://scenes/cpu_frigate.tscn")],
-   "cruiser": [preload("res://scenes/frigate.tscn"), preload("res://scenes/cpu_frigate.tscn")],
-   "battlecruiser": [preload("res://scenes/frigate.tscn"), preload("res://scenes/cpu_frigate.tscn")],
-   "battleship": [preload("res://scenes/frigate.tscn"), preload("res://scenes/cpu_frigate.tscn")],
+   "frigate": [preload("res://scenes/frigate.tscn"), preload("res://scripts/cpu_frigate.gd")],
+   "destroyer": [preload("res://scenes/frigate.tscn"), preload("res://scripts/cpu_frigate.gd")],
+   "cruiser": [preload("res://scenes/frigate.tscn"), preload("res://scripts/cpu_frigate.gd")],
+   "battlecruiser": [preload("res://scenes/frigate.tscn"), preload("res://scripts/cpu_frigate.gd")],
+   "battleship": [preload("res://scenes/frigate.tscn"), preload("res://scripts/cpu_frigate.gd")],
 }
 var ship_sprites = {
    "frigate": preload("res://assets/frigate.png"),
@@ -43,13 +43,35 @@ var current_selected : Object
 var player_fleet : Array
 var enemy_fleet : Array
 
+# get ship groups
+@onready var player_ships = get_tree().get_nodes_in_group("PlayerShips")
+@onready var friendly_ships = get_tree().get_nodes_in_group("FriendlyShips")
+@onready var neutral_ships = get_tree().get_nodes_in_group("NeutralShips")
+@onready var enemy_ships = get_tree().get_nodes_in_group("EnemyShips")
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
    pass
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
-   pass
+   player_ships = get_tree().get_nodes_in_group("PlayerShips")
+   friendly_ships = get_tree().get_nodes_in_group("FriendlyShips")
+   neutral_ships = get_tree().get_nodes_in_group("NeutralShips")
+   enemy_ships = get_tree().get_nodes_in_group("EnemyShips")
+   # redraw path
+   main.queue_redraw()
+   
+func draw_paths(map, group : Array, color: Color):
+   # loop through friendly ships and draw paths
+   for ship in group:
+      
+      # if points are more than 2 -> draw path
+      if !ship.current_point_path.size() < 2:
+         var point_path : PackedVector2Array = ship.current_point_path
+         point_path.slice(1).insert(0, ship.position)
+         map.draw_polyline(point_path, color, 3)
+# end of draw paths function -------------------------------------------------
 
 func update_pathfinding(main_node):
    main = main_node
@@ -101,11 +123,12 @@ func deploy_fleet(fleet : Array, faction : int, coords : Vector2):
 # creates a new instance of a ship, sets its position, names it, sets its faction, and adds it to the scene
 func instance_ship(map, ship_type : String, faction : int, ship_position : Vector2i):
    var ship
-   ship = Global.ships[ship_type][0].instantiate()
-   #if faction == 0:
-      #ship = Global.ships[ship_type][0].instantiate()
-   #else:
-      #ship = Global.ships[ship_type][1].instantiate()
+   #ship = ships[ship_type][0].instantiate()
+   if faction == 0:
+      ship = ships[ship_type][0].instantiate()
+   else:
+      ship = ships[ship_type][0].instantiate()
+      ship.set_script(ships[ship_type][1])
    ship.name = ship_type
    ship.position = map.tile_board.map_to_local(ship_position)
    ship.faction = faction

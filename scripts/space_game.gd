@@ -27,28 +27,31 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):
+   queue_redraw()
    pass
 
+func _draw():
+   Global.draw_paths(self, Global.player_ships, Color.SLATE_BLUE)
+   Global.draw_paths(self, Global.friendly_ships, Color.MEDIUM_SEA_GREEN)
+   Global.draw_paths(self, Global.neutral_ships, Color.DARK_GRAY)
+   Global.draw_paths(self, Global.enemy_ships, Color.INDIAN_RED)
+
 # --- # --- # --- # --- # Issues -- # --- # --- # --- # --- #
-# - 
+# - Camera zoom doesnt adjust clamp
 
 # --- # --- # --- # --- # Issues -- # --- # --- # --- # --- #
 # --- # --- # --- # --- # Todo List # --- # --- # --- # --- #
-# - add one pixel outline to the tilemap
+# - create attack buttons functionality
 # - visible health bars when a ship or object is hit
 # - limit attack directions?
 # - - railgun, torpedo, and pdc attack buttons
 # - - attack range and area overlay
 
-# - create seperate ingame UI scene?
 # - on player end turn emit signal to global
 # - - ai move function that takes faction and moves each ship
 # - - - ships move to closest position that would allow it to fire on the weakest ship
 # - - ai fire function that loops through ships and fires
 # - - - targets ship with the highest damage - health?
-
-# - move code from path.gd to Global movement
-# - seperate global ship functions into ship singleton
 
 # --- # --- # --- # --- # Todo List # --- # --- # --- # --- # 
 # --- # --- # --- # --- # Major --- # --- # --- # --- # --- #
