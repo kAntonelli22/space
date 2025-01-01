@@ -21,12 +21,8 @@ func _input(event):
    var over_object : bool = true if Global.astar.is_point_solid(tile) else false
    
    # fire railgun shell
-   if event.is_action_pressed("RMB") and is_selected and over_object and action_points > 0:
-      var hit_chance = 100 - (current_position.distance_to(tile) * 10)
-      is_firing = true
-      action_points -= 1
-      Global.attributes_changed.emit(self, null)
-      Global.instance_shell(tile, self, hit_chance)
+   if event.is_action_pressed("RMB") and ![is_selected, over_object, ready_to_fire].has(false) and action_points > 0:
+      fire_railgun(tile)
       
    # if user clicks while ship selected -> move
    if event.is_action_pressed("RMB") and is_selected and !over_object:

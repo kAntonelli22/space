@@ -28,6 +28,11 @@ signal damaged(obj_damaged : Object, num_damaged : int)                       # 
 # weapon signals
 signal obj_hit(obj : Object, weapon : Object, damage : int, origin : Object)  # emitted when a weapon hits an object
 signal shell_destroyed(weapon : Object, origin : Object)                      # emitted when a shell calls queue_free()
+# ui signals
+signal ui_torpedo
+signal ui_railgun
+signal ui_pdc
+signal ui_boarding
 # --- global signals --- #
 
 # global variables
@@ -73,11 +78,11 @@ func draw_paths(map, group : Array, color: Color):
          map.draw_polyline(point_path, color, 3)
 # end of draw paths function -------------------------------------------------
 
-func update_pathfinding(main_node):
-   main = main_node
-   map_size = main.tile_board.get_used_rect().end - main.tile_board.get_used_rect().position
+func update_pathfinding(map):
+   main = map
+   map_size = map.tile_board.get_used_rect().end - map.tile_board.get_used_rect().position
    map_rect = Rect2i(Vector2.ZERO, map_size)
-   tile_size = main.tile_board.tile_set.tile_size
+   tile_size = map.tile_board.tile_set.tile_size
 
    # set astar to integer map, set cell size, offset, movement style
    astar.region = map_rect
@@ -92,7 +97,7 @@ func update_pathfinding(main_node):
    for i in map_size.x:
       for j in map_size.y:
          var coords = Vector2i(i, j)
-         var tile_data = main.tile_board.get_cell_tile_data(coords)
+         var tile_data = map.tile_board.get_cell_tile_data(coords)
          
          # if tile at coords is not an empty space, set solid
          if tile_data and tile_data.get_custom_data("Type") != "space":
@@ -106,6 +111,13 @@ func check_collision_with_group(group : String, coords : Vector2):
          return true
    return false
 # end of check collision with group function ---------------------------------
+
+func check_cardinal(target : Vector2i, origin : Vector2i) -> bool:
+   var difference = target - origin
+   if difference.x == 0 or difference.y == 0: return true
+   elif abs(difference.x) == abs(difference.y): return true
+   else: return false
+# end of check cardinal direction function -----------------------------------
 
 # takes a fleet array and deploys it to the given coordinates
 func deploy_fleet(fleet : Array, faction : int, coords : Vector2):
@@ -151,6 +163,7 @@ func instance_shell(target, ship, percent):
 
 # display text
 func popup(text, position, color):
+   print("popup function activated")
    var popup_instance = text_popup.instantiate()
    main.add_child(popup_instance)
    popup_instance.label.text = text

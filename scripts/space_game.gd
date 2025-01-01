@@ -41,12 +41,11 @@ func _draw():
 
 # --- # --- # --- # --- # Issues -- # --- # --- # --- # --- #
 # --- # --- # --- # --- # Todo List # --- # --- # --- # --- #
-# - create attack buttons functionality
-# - visible health bars when a ship or object is hit
-# - limit attack directions?
-# - - railgun, torpedo, and pdc attack buttons
-# - - attack range and area overlay
+# - minimum range?
+# - merge action points and movement points?
+# add key binds
 
+# - visible health bars or health numbers when a ship or object is hit
 # - on player end turn emit signal to global
 # - - ai move function that takes faction and moves each ship
 # - - - ships move to closest position that would allow it to fire on the weakest ship

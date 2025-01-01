@@ -10,7 +10,7 @@ extends CanvasLayer
 @onready var action_bar = $BottomLeft/VBoxContainer/Container/ActionBar
 
 @onready var pause_menu = $"../PauseMenu"
-
+@onready var railgun_button = $"Left Side/Railgun"
 # Called when the node enters the scene tree for the first time.
 func _ready():
    pass
@@ -53,13 +53,12 @@ func connect_signals():
    Global.connect("obj_deselected", deselect_signal)
    Global.connect("attributes_changed", update_info_panel)
 
+# should probably find a way to connect the pressed signal directly
 func _on_torpedo_pressed() -> void:
-   print("torpedo button pressed")
+   Global.emit_signal("ui_torpedo")
    
-
 func _on_railgun_pressed() -> void:
-   print("railgun button pressed")
-
+   Global.emit_signal("ui_railgun")
 
 func _on_pdc_pressed() -> void:
-   print("pdc button pressed")
+   Global.emit_signal("ui_pdc")

@@ -5,12 +5,13 @@ var faction : int = 0
 var is_selected : bool = false
 var is_moving : bool = false
 var is_firing : bool = false
+var ready_to_fire : bool = false
 
 # constant variables
 var MAX_HEALTH : int = 10
 var MAX_MOVEMENT : int = 4
 var MAX_ACTION : int = 2
-var RAILGUN_RANGE : Vector2i = Vector2i(5, 5)
+var RAILGUN_RANGE : int = 5
 
 # movement variables
 var current_position : Vector2i     # main.tile_board.local_to_map(position)
@@ -47,6 +48,7 @@ func _ready() -> void:
    Global.connect("obj_selected", select_signal)
    Global.connect("obj_hit", object_hit)
    Global.connect("shell_destroyed", shell_destroyed)
+   Global.connect("ui_railgun", ui_railgun)
 # end of ready function ------------------------------------------------------
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -66,7 +68,6 @@ func _physics_process(_delta):
 
 func display_movement():
    var tile_queue : Array
-   var id_path : Array[Vector2i]
    
    # get all tiles in a square around ship based on movement points, +1 offset
    for i in range(-movement_points, movement_points + 1):
@@ -74,7 +75,27 @@ func display_movement():
             var tile_coords : Vector2i = Vector2i(current_position.x + i, current_position.y + j)
             tile_queue.append(tile_coords)
    # end of for loop ---------------------------------------------------------
-   # fill in tiles
+   update_overlay(tile_queue, 0)
+# end of display movement function -------------------------------------------
+
+func display_attack(max_range : int):
+   var tile_queue : Array
+   
+   # get all tiles in a square around ship based on movement points, +1 offset
+   for i in range(-max_range, max_range + 1):
+         for j in range(-max_range, max_range + 1):
+            var tile_coords : Vector2i = Vector2i(current_position.x + i, current_position.y + j)
+            if Global.check_cardinal(tile_coords, current_position):
+               tile_queue.append(tile_coords)
+   # end of for loop ---------------------------------------------------------
+   while tile_queue:
+      var current_tile : Vector2i = tile_queue.pop_front()
+      main.tile_overlay.set_cell(current_tile, 3, Vector2i(0, 0), 1)
+# end of display movement function -------------------------------------------
+
+func update_overlay(tile_queue, tile_variant):
+   var id_path : Array[Vector2i]
+   
    while tile_queue:
       var current_tile : Vector2i = tile_queue.pop_front()
       if !Global.map_rect.has_point(current_tile):
@@ -85,9 +106,9 @@ func display_movement():
       
       # if id path size is less than movement points and current tile isnt solid -> apply movement overlay
       if id_path.size() <= movement_points and !Global.astar.is_point_solid(current_tile):
-         main.tile_overlay.set_cell(current_tile, 3, Vector2i(0, 0))
+         main.tile_overlay.set_cell(current_tile, 3, Vector2i(0, 0), tile_variant)
    # end of tile queue while loop --------------------------------------------
-# end of display movement function -------------------------------------------
+# end of update_overlay function ---------------------------------------------
 
 # move ship
 func move_ship():
@@ -114,6 +135,16 @@ func move_ship():
    # end of global position equals next target point if statement ------------
 # end of move ship function --------------------------------------------------
 
+# fire railgun
+func fire_railgun(target):
+   var distance = current_position.distance_to(target)
+   if Global.check_cardinal(target, current_position) and distance < RAILGUN_RANGE:
+      var hit_chance = 100 - (distance * 10)
+      is_firing = true
+      action_points -= 1
+      Global.attributes_changed.emit(self, null)
+      Global.instance_shell(target, self, hit_chance)
+
 # refresh ship actions and logic after end of turn
 func next_turn():
    # reset movement and action points
@@ -129,12 +160,27 @@ func select_signal(_obj_selected : Object, obj_deselected):
    if is_selected and obj_deselected == self:
       main.tile_overlay.clear()
       is_selected = false
-      
+   
+# check if ship has been hit by a projectile
 func object_hit(obj : Object, _weapon : Object, damage : int, _origin : Object):
-   if obj == self: health_points -= damage
+   if obj != self: return
+   health_points -= damage
    if health_points <= 0: queue_free()
    if damage == 0: Global.popup("Miss!", position, Color.GRAY)
    else: Global.popup(str(damage), position, Color.RED)
-   
+
+# enable user control logic
 func shell_destroyed(_weapon : Object, _origin : Object):
    is_firing = false
+
+# # ui buttons
+# handle railgun ui button being pressed
+func ui_railgun():
+   if is_selected:
+      ready_to_fire = true
+      main.tile_overlay.clear()
+      display_attack(RAILGUN_RANGE)
+   elif is_selected and ready_to_fire:
+      ready_to_fire = false
+      main.tile_overlay.clear()
+      
