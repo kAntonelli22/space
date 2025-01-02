@@ -66,6 +66,10 @@ func _physics_process(_delta):
    move_ship()  # move the ships sprite
 # end of sprite movement function --------------------------------------------
 
+# signal called every time an event occurs within bounds of the collision object
+func _on_input_event(_viewport, _event, _shape_idx):
+   pass
+
 func display_movement():
    var tile_queue : Array
    
@@ -176,11 +180,13 @@ func shell_destroyed(_weapon : Object, _origin : Object):
 # # ui buttons
 # handle railgun ui button being pressed
 func ui_railgun():
-   if is_selected:
+   if is_selected and !ready_to_fire:
       ready_to_fire = true
       main.tile_overlay.clear()
       display_attack(RAILGUN_RANGE)
    elif is_selected and ready_to_fire:
       ready_to_fire = false
       main.tile_overlay.clear()
+      if movement_points > 0:
+         display_movement()
       

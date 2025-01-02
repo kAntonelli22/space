@@ -1,12 +1,13 @@
 extends Node # singleton global script
 
-# ship scenes for instancing - "ship_name": [player_ship, ai_ship]
+var ship_scene = preload("res://scenes/ship.tscn")
+# ship scripts for instancing - "ship_name": [player_ship, ai_ship]
 var ships = {
-   "frigate": [preload("res://scenes/frigate.tscn"), preload("res://scripts/cpu_frigate.gd")],
-   "destroyer": [preload("res://scenes/frigate.tscn"), preload("res://scripts/cpu_frigate.gd")],
-   "cruiser": [preload("res://scenes/frigate.tscn"), preload("res://scripts/cpu_frigate.gd")],
-   "battlecruiser": [preload("res://scenes/frigate.tscn"), preload("res://scripts/cpu_frigate.gd")],
-   "battleship": [preload("res://scenes/frigate.tscn"), preload("res://scripts/cpu_frigate.gd")],
+   "frigate": [preload("res://scripts/player_frigate.gd"), preload("res://scripts/cpu_frigate.gd")],
+   "destroyer": [preload("res://scripts/player_frigate.gd"), preload("res://scripts/cpu_frigate.gd")],
+   "cruiser": [preload("res://scripts/player_frigate.gd"), preload("res://scripts/cpu_frigate.gd")],
+   "battlecruiser": [preload("res://scripts/player_frigate.gd"), preload("res://scripts/cpu_frigate.gd")],
+   "battleship": [preload("res://scripts/player_frigate.gd"), preload("res://scripts/cpu_frigate.gd")],
 }
 var ship_sprites = {
    "frigate": preload("res://assets/frigate.png"),
@@ -135,12 +136,9 @@ func deploy_fleet(fleet : Array, faction : int, coords : Vector2):
 # creates a new instance of a ship, sets its position, names it, sets its faction, and adds it to the scene
 func instance_ship(map, ship_type : String, faction : int, ship_position : Vector2i):
    var ship
-   #ship = ships[ship_type][0].instantiate()
-   if faction == 0:
-      ship = ships[ship_type][0].instantiate()
-   else:
-      ship = ships[ship_type][0].instantiate()
-      ship.set_script(ships[ship_type][1])
+   ship = ship_scene.instantiate()
+   ship.set_script(ships[ship_type][faction])
+   
    ship.name = ship_type
    ship.position = map.tile_board.map_to_local(ship_position)
    ship.faction = faction

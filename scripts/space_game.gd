@@ -38,12 +38,16 @@ func _draw():
 
 # --- # --- # --- # --- # Issues -- # --- # --- # --- # --- #
 # - Camera zoom doesnt adjust clamp
+# - attack overlay diagonal goes to far
+# - frigate sprite has accidental background in between thrusters and is 16x16
 
 # --- # --- # --- # --- # Issues -- # --- # --- # --- # --- #
 # --- # --- # --- # --- # Todo List # --- # --- # --- # --- #
+# - selection square underneath selected ships
+# - tile cursor is currently over highlighted?
 # - minimum range?
 # - merge action points and movement points?
-# add key binds
+# - add key binds for each ui button
 
 # - visible health bars or health numbers when a ship or object is hit
 # - on player end turn emit signal to global

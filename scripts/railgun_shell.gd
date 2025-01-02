@@ -26,7 +26,6 @@ func _ready():
 
 # called on collision with objects or ships
 func _on_body_entered(body):
-   print(body)
    if body != origin:
       Global.obj_hit.emit(body, self, damage, origin)
       hit_target = true

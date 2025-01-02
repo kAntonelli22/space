@@ -1,6 +1,19 @@
-[gd_scene load_steps=2 format=3 uid="uid://ps4jp4pi3m6d"]
+[gd_scene load_steps=4 format=3 uid="uid://ps4jp4pi3m6d"]
 
 [ext_resource type="Script" path="res://scripts/ship.gd" id="1_3te4f"]
+[ext_resource type="Texture2D" uid="uid://b4b8ror8b47gu" path="res://assets/frigate.png" id="2_v6yhh"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1ghsk"]
+size = Vector2(24, 24)
 
 [node name="Ship" type="CharacterBody2D"]
+input_pickable = true
 script = ExtResource("1_3te4f")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_1ghsk")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_v6yhh")
+
+[connection signal="input_event" from="." to="." method="_on_input_event"]
