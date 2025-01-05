@@ -2,6 +2,7 @@ extends "res://scripts/ship.gd"
 
 func _ready():
    super._ready()    # call ready function of ship class
+   square.modulate = Color.BLUE
 # end of ready function ------------------------------------------------------
 
 func _process(delta):
@@ -26,6 +27,7 @@ func _input(event):
       
    # if user clicks while ship selected -> move
    if event.is_action_pressed("RMB") and is_selected and !over_object:
+      print("move")
       Global.astar.set_point_solid(current_position, 0)     # clear current position from astar
       var id_path = Global.astar.get_id_path(current_position, tile).slice(1)
          

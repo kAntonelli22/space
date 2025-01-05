@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://02y32uvdi0qi"
-path="res://.godot/imported/left.png-c02db783d91dab4a1c0b0d8914e9d82c.ctex"
+uid="uid://fyjyv6uo6dg1"
+path="res://.godot/imported/overlay_tileset.png-c569c41394b20c27f3f864f32acded73.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/border_assets/left.png"
-dest_files=["res://.godot/imported/left.png-c02db783d91dab4a1c0b0d8914e9d82c.ctex"]
+source_file="res://assets/overlay_tileset.png"
+dest_files=["res://.godot/imported/overlay_tileset.png-c569c41394b20c27f3f864f32acded73.ctex"]
 
 [params]
 

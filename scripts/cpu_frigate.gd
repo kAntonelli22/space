@@ -2,6 +2,7 @@ extends "res://scripts/ship.gd"
 
 func _ready():
    super._ready()    # call ready function of frigate class
+   square.modulate = Color.RED
 
 func _process(delta):
    super._process(delta)    # call process function of frigate class

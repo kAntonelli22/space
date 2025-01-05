@@ -28,6 +28,7 @@ var action_points : int = MAX_ACTION
 @onready var main = get_parent()
 @onready var sprite = $Sprite2D
 @onready var collider = $CollisionShape2D
+@onready var square = $Square
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -72,17 +73,17 @@ func _on_input_event(_viewport, _event, _shape_idx):
 
 func display_movement():
    var tile_queue : Array
-   
    # get all tiles in a square around ship based on movement points, +1 offset
    for i in range(-movement_points, movement_points + 1):
          for j in range(-movement_points, movement_points + 1):
             var tile_coords : Vector2i = Vector2i(current_position.x + i, current_position.y + j)
             tile_queue.append(tile_coords)
    # end of for loop ---------------------------------------------------------
-   update_overlay(tile_queue, 0)
+   tile_queue = check_pathfinding(tile_queue, 0, movement_points)
+   main.tile_overlay.set_cells_terrain_connect(tile_queue, 0, 2)
 # end of display movement function -------------------------------------------
 
-func display_attack(max_range : int):
+func display_attack(min_range : int, max_range : int):
    var tile_queue : Array
    
    # get all tiles in a square around ship based on movement points, +1 offset
@@ -92,27 +93,27 @@ func display_attack(max_range : int):
             if Global.check_cardinal(tile_coords, current_position):
                tile_queue.append(tile_coords)
    # end of for loop ---------------------------------------------------------
-   while tile_queue:
-      var current_tile : Vector2i = tile_queue.pop_front()
-      main.tile_overlay.set_cell(current_tile, 3, Vector2i(0, 0), 1)
+   tile_queue = check_pathfinding(tile_queue, min_range, max_range)
+   main.tile_overlay.set_cells_terrain_connect(tile_queue, 0, 3)
 # end of display movement function -------------------------------------------
 
-func update_overlay(tile_queue, tile_variant):
-   var id_path : Array[Vector2i]
+func check_pathfinding(tiles, min_range, max_range):
+   var id_path : Array[Vector2i] # contains the pathfinding point array
+   var queue : Array             # contains the final tiles the overlay is to be added to
    
-   while tile_queue:
-      var current_tile : Vector2i = tile_queue.pop_front()
-      if !Global.map_rect.has_point(current_tile):
-         continue
+   while tiles:
+      var current_tile : Vector2i = tiles.pop_front()
+      if !Global.map_rect.has_point(current_tile): continue
       id_path = []
       id_path = Global.astar.get_id_path(current_position, current_tile)
       id_path.pop_front()        # remove the start coord from path
       
       # if id path size is less than movement points and current tile isnt solid -> apply movement overlay
       if id_path.size() <= movement_points and !Global.astar.is_point_solid(current_tile):
-         main.tile_overlay.set_cell(current_tile, 3, Vector2i(0, 0), tile_variant)
+         queue.append(current_tile)
    # end of tile queue while loop --------------------------------------------
-# end of update_overlay function ---------------------------------------------
+   return queue
+# end of check_pathfinding function ---------------------------------------------
 
 # move ship
 func move_ship():
@@ -183,7 +184,7 @@ func ui_railgun():
    if is_selected and !ready_to_fire:
       ready_to_fire = true
       main.tile_overlay.clear()
-      display_attack(RAILGUN_RANGE)
+      display_attack(0, RAILGUN_RANGE)
    elif is_selected and ready_to_fire:
       ready_to_fire = false
       main.tile_overlay.clear()

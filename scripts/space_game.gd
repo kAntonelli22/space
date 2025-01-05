@@ -37,12 +37,14 @@ func _draw():
    Global.draw_paths(self, Global.enemy_ships, Color.INDIAN_RED)
 
 # --- # --- # --- # --- # Issues -- # --- # --- # --- # --- #
+# - fix isses with overlay and add missing r pieces
 # - Camera zoom doesnt adjust clamp
 # - attack overlay diagonal goes to far
 # - frigate sprite has accidental background in between thrusters and is 16x16
 
 # --- # --- # --- # --- # Issues -- # --- # --- # --- # --- #
 # --- # --- # --- # --- # Todo List # --- # --- # --- # --- #
+# - 10x health and damage
 # - selection square underneath selected ships
 # - tile cursor is currently over highlighted?
 # - minimum range?
