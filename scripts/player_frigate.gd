@@ -26,8 +26,8 @@ func _input(event):
       fire_railgun(tile)
       
    # if user clicks while ship selected -> move
-   if event.is_action_pressed("RMB") and is_selected and !over_object:
-      print("move")
+   if event.is_action_pressed("RMB") and ![is_selected, !over_object, !ready_to_fire].has(false):
+      print("player: moving")
       Global.astar.set_point_solid(current_position, 0)     # clear current position from astar
       var id_path = Global.astar.get_id_path(current_position, tile).slice(1)
          
@@ -38,6 +38,7 @@ func _input(event):
          Global.attributes_changed.emit(self, null)
          current_id_path = id_path
          current_point_path = Global.astar.get_point_path(current_position, tile)
+      else: print("player: outside movement area")
          # end of ship moving if statement -----------------------------------
       # end of local path var if statement -----------------------------------
    # end of click while selected if statement --------------------------------

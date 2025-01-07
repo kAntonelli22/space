@@ -113,6 +113,15 @@ func check_collision_with_group(group : String, coords : Vector2):
    return false
 # end of check collision with group function ---------------------------------
 
+# gets the tiles in in a square from the given position
+func get_tiles(position : Vector2i, width : int, height : int) -> Array:
+   var array : Array
+   for i in range(-width, width + 1):
+      for j in range(-height, height + 1):
+         array.append(Vector2i(position.x + i, position.y + j))
+   return array
+# end of get tiles function --------------------------------------------------
+
 func check_cardinal(target : Vector2i, origin : Vector2i) -> bool:
    var difference = target - origin
    if difference.x == 0 or difference.y == 0: return true
@@ -170,11 +179,4 @@ func popup(text, position, color):
 
 # called by map node after all new instances that access signals have been added
 func connect_signals():
-   connect("next_turn", ai_move)
-
-# friendly ship ai movement function
-func ai_move():
-   pass
-
-func ai_attack():
    pass

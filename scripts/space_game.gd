@@ -37,6 +37,8 @@ func _draw():
    Global.draw_paths(self, Global.enemy_ships, Color.INDIAN_RED)
 
 # --- # --- # --- # --- # Issues -- # --- # --- # --- # --- #
+# - tiles that cannot be pathed to are automatically highlighted by overlays
+# - ship can move while in attack mode
 # - fix isses with overlay and add missing r pieces
 # - Camera zoom doesnt adjust clamp
 # - attack overlay diagonal goes to far

@@ -72,12 +72,8 @@ func _on_input_event(_viewport, _event, _shape_idx):
    pass
 
 func display_movement():
-   var tile_queue : Array
    # get all tiles in a square around ship based on movement points, +1 offset
-   for i in range(-movement_points, movement_points + 1):
-         for j in range(-movement_points, movement_points + 1):
-            var tile_coords : Vector2i = Vector2i(current_position.x + i, current_position.y + j)
-            tile_queue.append(tile_coords)
+   var tile_queue : Array = Global.get_tiles(current_position, movement_points, movement_points)
    # end of for loop ---------------------------------------------------------
    tile_queue = check_pathfinding(tile_queue, 0, movement_points)
    main.tile_overlay.set_cells_terrain_connect(tile_queue, 0, 2)
