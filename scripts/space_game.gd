@@ -37,28 +37,25 @@ func _draw():
    Global.draw_paths(self, Global.enemy_ships, Color.INDIAN_RED)
 
 # --- # --- # --- # --- # Issues -- # --- # --- # --- # --- #
-# - tiles that cannot be pathed to are automatically highlighted by overlays
-# - ship can move while in attack mode
+# - ships do not update pathfinding grid when they queue free
+# - error when ships emit shell destroyed signal
+# - tiles that cannot be pathed to are automatically highlighted by overlays # # Solved? #
 # - fix isses with overlay and add missing r pieces
 # - Camera zoom doesnt adjust clamp
-# - attack overlay diagonal goes to far
 # - frigate sprite has accidental background in between thrusters and is 16x16
+# - ai_move can move ships onto tiles occupied by other ships
 
 # --- # --- # --- # --- # Issues -- # --- # --- # --- # --- #
 # --- # --- # --- # --- # Todo List # --- # --- # --- # --- #
+# - ai_attack function
+# - optimize check pathfinding and display functions
+# - tilemap collision only astar grid for pathfinding function
 # - 10x health and damage
-# - selection square underneath selected ships
-# - tile cursor is currently over highlighted?
+# - highlight tile mouse is currently over?
 # - minimum range?
 # - merge action points and movement points?
 # - add key binds for each ui button
-
 # - visible health bars or health numbers when a ship or object is hit
-# - on player end turn emit signal to global
-# - - ai move function that takes faction and moves each ship
-# - - - ships move to closest position that would allow it to fire on the weakest ship
-# - - ai fire function that loops through ships and fires
-# - - - targets ship with the highest damage - health?
 
 # --- # --- # --- # --- # Todo List # --- # --- # --- # --- # 
 # --- # --- # --- # --- # Major --- # --- # --- # --- # --- #

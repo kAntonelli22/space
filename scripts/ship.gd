@@ -11,7 +11,8 @@ var ready_to_fire : bool = false
 var MAX_HEALTH : int = 10
 var MAX_MOVEMENT : int = 4
 var MAX_ACTION : int = 2
-var RAILGUN_RANGE : int = 5
+var RAILGUN_MAX : int = 5
+var RAILGUN_MIN : int = 1
 
 # movement variables
 var current_position : Vector2i     # main.tile_board.local_to_map(position)
@@ -23,6 +24,7 @@ var current_point_path : PackedVector2Array
 var health_points : int = MAX_HEALTH
 var movement_points : int = MAX_MOVEMENT
 var action_points : int = MAX_ACTION
+var damage : int = 4    # average damage that the ship is capable of each turn, for ai 
 
 # node references
 @onready var main = get_parent()
@@ -105,7 +107,7 @@ func check_pathfinding(tiles, min_range, max_range):
       id_path.pop_front()        # remove the start coord from path
       
       # if id path size is less than movement points and current tile isnt solid -> apply movement overlay
-      if id_path.size() <= movement_points and !Global.astar.is_point_solid(current_tile):
+      if id_path.size() <= movement_points and id_path.size() > min_range and !Global.astar.is_point_solid(current_tile):
          queue.append(current_tile)
    # end of tile queue while loop --------------------------------------------
    return queue
@@ -136,15 +138,20 @@ func move_ship():
    # end of global position equals next target point if statement ------------
 # end of move ship function --------------------------------------------------
 
-# fire railgun
-func fire_railgun(target):
-   var distance = current_position.distance_to(target)
-   if Global.check_cardinal(target, current_position) and distance < RAILGUN_RANGE:
-      var hit_chance = 100 - (distance * 10)
-      is_firing = true
-      action_points -= 1
-      Global.attributes_changed.emit(self, null)
-      Global.instance_shell(target, self, hit_chance)
+func calc_accuracy(tile, target) -> int:
+   var accuracy : int = 100
+   var distance = tile.distance_to(target)
+   accuracy -= (distance * 10)  
+   #accuracy -= number of debris objects on path
+   return accuracy
+   
+# fires a single railgun shell at the target tile
+func fire_railgun(target : Vector2i):
+   var accuracy = calc_accuracy(current_position, target)
+   is_firing = true
+   action_points -= 1
+   Global.attributes_changed.emit(self, null)
+   Global.instance_shell(target, self, accuracy)
 
 # refresh ship actions and logic after end of turn
 func next_turn():
@@ -157,18 +164,18 @@ func next_turn():
 # end of next turn button ----------------------------------------------------
 
 # deselect ship if other ship emits select signal
-func select_signal(_obj_selected : Object, obj_deselected):
+func select_signal(_obj_selected, obj_deselected):
    if is_selected and obj_deselected == self:
       main.tile_overlay.clear()
       is_selected = false
    
 # check if ship has been hit by a projectile
-func object_hit(obj : Object, _weapon : Object, damage : int, _origin : Object):
+func object_hit(obj : Object, _weapon : Object, damage_dealt : int, _origin : Object):
    if obj != self: return
-   health_points -= damage
+   health_points -= damage_dealt
    if health_points <= 0: queue_free()
-   if damage == 0: Global.popup("Miss!", position, Color.GRAY)
-   else: Global.popup(str(damage), position, Color.RED)
+   if damage_dealt == 0: Global.popup("Miss!", position, Color.GRAY)
+   else: Global.popup(str(damage_dealt), position, Color.RED)
 
 # enable user control logic
 func shell_destroyed(_weapon : Object, _origin : Object):
@@ -180,7 +187,7 @@ func ui_railgun():
    if is_selected and !ready_to_fire:
       ready_to_fire = true
       main.tile_overlay.clear()
-      display_attack(0, RAILGUN_RANGE)
+      display_attack(RAILGUN_MIN, RAILGUN_MAX)
    elif is_selected and ready_to_fire:
       ready_to_fire = false
       main.tile_overlay.clear()
