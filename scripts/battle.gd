@@ -37,13 +37,14 @@ func _draw():
    Global.draw_paths(self, Global.enemy_ships, Color.INDIAN_RED)
 
 # --- # --- # --- # --- # Issues -- # --- # --- # --- # --- #
-# - ships do not update pathfinding grid when they queue free
-# - error when ships emit shell destroyed signal
+# - ship selection is bugged after ending turn
+# - railgun shells can still freeze after hitting a ship
+# - await may not be working correctly
+# - attack overlay uses movement points and should not
 # - tiles that cannot be pathed to are automatically highlighted by overlays # # Solved? #
 # - fix isses with overlay and add missing r pieces
 # - Camera zoom doesnt adjust clamp
 # - frigate sprite has accidental background in between thrusters and is 16x16
-# - ai_move can move ships onto tiles occupied by other ships
 
 # --- # --- # --- # --- # Issues -- # --- # --- # --- # --- #
 # --- # --- # --- # --- # Todo List # --- # --- # --- # --- #

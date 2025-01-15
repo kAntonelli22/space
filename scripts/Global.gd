@@ -19,23 +19,6 @@ var ship_sprites = {
 var railgun_shell := preload("res://scenes/railgun_shell.tscn")
 var text_popup := preload("res://scenes/popup_container.tscn")
 
-# --- global signals --- #
-signal next_turn
-signal attributes_changed(object : Object)                                    # emitted when ships change attributes
-# ship signals
-signal obj_selected(new_selected : Object, old_selected : Object)             # emitted when ships are selected
-signal obj_deselected(old_selected : Object)                                  # emitted when ships are deselected
-signal damaged(obj_damaged : Object, num_damaged : int)                       # emitted when a ship is damaged
-# weapon signals
-signal obj_hit(obj : Object, weapon : Object, damage : int, origin : Object)  # emitted when a weapon hits an object
-signal shell_destroyed(weapon : Object, origin : Object)                      # emitted when a shell calls queue_free()
-# ui signals
-signal ui_torpedo
-signal ui_railgun
-signal ui_pdc
-signal ui_boarding
-# --- global signals --- #
-
 # global variables
 var main : Node2D
 var map_size : Vector2i
@@ -55,6 +38,8 @@ var enemy_fleet : Array
 @onready var neutral_ships = get_tree().get_nodes_in_group("NeutralShips")
 @onready var enemy_ships = get_tree().get_nodes_in_group("EnemyShips")
 
+@onready var faction_groups : Array = [player_ships, enemy_ships]
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
    pass
@@ -65,8 +50,10 @@ func _process(_delta: float) -> void:
    friendly_ships = get_tree().get_nodes_in_group("FriendlyShips")
    neutral_ships = get_tree().get_nodes_in_group("NeutralShips")
    enemy_ships = get_tree().get_nodes_in_group("EnemyShips")
+   faction_groups = [player_ships, enemy_ships]
+   
    # redraw path
-   main.queue_redraw()
+   if main: main.queue_redraw()
    
 func draw_paths(map, group : Array, color: Color):
    # loop through friendly ships and draw paths
@@ -144,15 +131,20 @@ func deploy_fleet(fleet : Array, faction : int, coords : Vector2):
 
 # creates a new instance of a ship, sets its position, names it, sets its faction, and adds it to the scene
 func instance_ship(map, ship_type : String, faction : int, ship_position : Vector2i):
-   var ship
-   ship = ship_scene.instantiate()
+   var ship = ship_scene.instantiate()
    ship.set_script(ships[ship_type][faction])
-   
-   ship.name = ship_type
+   print("ship ", ship_type + str(faction_groups[faction].size()), " added")
+   ship.name = ship_type + str(faction_groups[faction].size())
    ship.position = map.tile_board.map_to_local(ship_position)
    ship.faction = faction
    map.add_child(ship)
    ship.sprite.rotation += deg_to_rad(180 * faction)
+   
+   player_ships = get_tree().get_nodes_in_group("PlayerShips")
+   friendly_ships = get_tree().get_nodes_in_group("FriendlyShips")
+   neutral_ships = get_tree().get_nodes_in_group("NeutralShips")
+   enemy_ships = get_tree().get_nodes_in_group("EnemyShips")
+   faction_groups = [player_ships, enemy_ships]
 # end of instance ship function ----------------------------------------------
 
 func instance_shell(target, ship, percent):
@@ -176,6 +168,23 @@ func popup(text, position, color):
    popup_instance.label.text = text
    popup_instance.position = position
    popup_instance.label.add_theme_color_override("font_color", color)
+
+func turn():
+   faction_turn(Global.friendly_ships)
+   faction_turn(Global.enemy_ships)
+   faction_turn(Global.neutral_ships)
+   print("turn completed")
+   SignalBus.emit_signal("next_turn")
+
+func faction_turn(faction):
+   print("faction: ", faction, " starting turn")
+   for ship in faction:
+      print("\n", ship.name, ": starting turn\n------------------------")
+      current_selected = ship
+      ship.is_selected = true
+      await SignalBus.turn_complete
+      print("\n", ship.name, ": ending turn\n------------------------")
+   print("faction: ", faction, " ending turn")
 
 # called by map node after all new instances that access signals have been added
 func connect_signals():

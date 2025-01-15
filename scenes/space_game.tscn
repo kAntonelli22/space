@@ -1,6 +1,6 @@
 [gd_scene load_steps=11 format=4 uid="uid://d08ph7trk3wkr"]
 
-[ext_resource type="Script" path="res://scripts/space_game.gd" id="1_p277o"]
+[ext_resource type="Script" path="res://scripts/battle.gd" id="1_p277o"]
 [ext_resource type="Texture2D" uid="uid://5cfkkyubt5gd" path="res://assets/Space Background.png" id="2_uawoo"]
 [ext_resource type="Texture2D" uid="uid://5huh3rm4jeux" path="res://assets/asteroid_tileset.png" id="3_wivf7"]
 [ext_resource type="Texture2D" uid="uid://fyjyv6uo6dg1" path="res://assets/overlay_tileset.png" id="4_qjp5r"]
@@ -605,7 +605,7 @@ func _on_menu_button_pressed():
    get_tree().change_scene_to_file(\"res://scenes/main_menu.tscn\")
 "
 
-[node name="SpaceGame" type="Node2D"]
+[node name="Battle" type="Node2D"]
 script = ExtResource("1_p277o")
 
 [node name="Outline" type="ColorRect" parent="."]

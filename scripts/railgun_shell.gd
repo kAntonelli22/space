@@ -27,7 +27,7 @@ func _ready():
 # called on collision with objects or ships
 func _on_body_entered(body):
    if body != origin:
-      Global.obj_hit.emit(body, self, damage, origin)
+      SignalBus.obj_hit.emit(body, self, damage, origin)
       hit_target = true
       if !miss:
          position = body.position
@@ -44,9 +44,9 @@ func _physics_process(delta):
       sprite.modulate.a -= 0.05
 
 func _on_visible_on_screen_notifier_2d_screen_exited():
-   Global.shell_destroyed.emit(self, origin)
+   SignalBus.shell_destroyed.emit(self, origin)
    self.queue_free()
 
 func _on_destroy_timer_timeout():
-   Global.shell_destroyed.emit(self, origin)
+   SignalBus.shell_destroyed.emit(self, origin)
    self.queue_free()

@@ -47,11 +47,11 @@ func _ready() -> void:
    elif faction == 3:
       add_to_group("NeutralShips")
       
-   Global.connect("next_turn", next_turn)
-   Global.connect("obj_selected", select_signal)
-   Global.connect("obj_hit", object_hit)
-   Global.connect("shell_destroyed", shell_destroyed)
-   Global.connect("ui_railgun", ui_railgun)
+   SignalBus.connect("next_turn", next_turn)
+   SignalBus.connect("obj_selected", select_signal)
+   SignalBus.connect("obj_hit", object_hit)
+   SignalBus.connect("shell_destroyed", shell_destroyed)
+   SignalBus.connect("ui_railgun", ui_railgun)
 # end of ready function ------------------------------------------------------
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -150,7 +150,7 @@ func fire_railgun(target : Vector2i):
    var accuracy = calc_accuracy(current_position, target)
    is_firing = true
    action_points -= 1
-   Global.attributes_changed.emit(self, null)
+   SignalBus.attributes_changed.emit(self, null)
    Global.instance_shell(target, self, accuracy)
 
 # refresh ship actions and logic after end of turn
@@ -158,7 +158,7 @@ func next_turn():
    # reset movement and action points
    movement_points = MAX_MOVEMENT
    action_points = MAX_ACTION
-   Global.attributes_changed.emit(self, null)
+   SignalBus.attributes_changed.emit(self, null)
    if is_selected:
       display_movement()
 # end of next turn button ----------------------------------------------------
@@ -173,12 +173,12 @@ func select_signal(_obj_selected, obj_deselected):
 func object_hit(obj : Object, _weapon : Object, damage_dealt : int, _origin : Object):
    if obj != self: return
    health_points -= damage_dealt
-   if health_points <= 0: queue_free()
+   if health_points <= 0: ship_destroyed()
    if damage_dealt == 0: Global.popup("Miss!", position, Color.GRAY)
    else: Global.popup(str(damage_dealt), position, Color.RED)
 
 # enable user control logic
-func shell_destroyed(_weapon : Object, _origin : Object):
+func shell_destroyed(_weapon, _origin):
    is_firing = false
 
 # # ui buttons
@@ -194,3 +194,8 @@ func ui_railgun():
       if movement_points > 0:
          display_movement()
       
+# ship destroyed function
+func ship_destroyed():
+   SignalBus.emit_signal("ship_destroyed", self)
+   Global.astar.set_point_solid(current_position, 0)     # clear current position from astar
+   queue_free()

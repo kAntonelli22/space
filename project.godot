@@ -18,6 +18,8 @@ config/icon="res://assets/frigate.png"
 [autoload]
 
 Global="*res://scripts/Global.gd"
+SignalBus="*res://scripts/SignalBus.gd"
+AIController="*res://scripts/AIController.gd"
 
 [debug]
 

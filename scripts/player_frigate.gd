@@ -35,7 +35,7 @@ func _input(event):
       if !id_path.is_empty() and id_path.size() <= movement_points:
          main.tile_overlay.clear()    # clear movement overlay
          movement_points -= id_path.size()
-         Global.attributes_changed.emit(self, null)
+         SignalBus.attributes_changed.emit(self, null)
          current_id_path = id_path
          current_point_path = Global.astar.get_point_path(current_position, tile)
       else: print("player: outside movement area")
@@ -45,7 +45,7 @@ func _input(event):
    
    # if user deselects -> deselect ship, update current obj selected in parent node, clear movement overlay
    if event.is_action_pressed("Deselect") and is_selected:
-      Global.obj_deselected.emit(self)
+      SignalBus.obj_deselected.emit(self)
       Global.current_selected = null
       is_selected = false
       main.tile_overlay.clear()    # clear movement overlay
@@ -62,7 +62,7 @@ func _on_input_event(_viewport, event, _shape_idx):
    if event.is_action_pressed("LMB"):
       # if ship isnt selected -> select ship
       if !is_selected:
-         Global.obj_selected.emit(self, Global.current_selected)
+         SignalBus.obj_selected.emit(self, Global.current_selected)
          Global.current_selected = self
          display_movement()
          is_selected = true
