@@ -4,7 +4,7 @@ func _ready():
    super._ready()    # call ready function of frigate class
    square.modulate = Color.RED
 
-func _process(delta):
+func _process(_delta):
    #super._process(delta)    # call process function of frigate class
    if !is_selected: return
    

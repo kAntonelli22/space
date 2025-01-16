@@ -1,5 +1,5 @@
 ea4bc82a6ad023ab7ee23ee620429895
-::res://::1736968377
+::res://::1737057815
 icon.svg::CompressedTexture2D::8758213908954206854::1724955355::1734478457::1::::<><>::
 README.md::TextFile::-1::1733619875::0::1::::<><>::
 ::res://assets/::1736114035
@@ -12,26 +12,26 @@ Space Background.png::CompressedTexture2D::2110116070771606255::1725134261::1734
 square.png::CompressedTexture2D::4573129196786544850::1736109688::1736109727::1::::<><>::
 torpedo.png::CompressedTexture2D::4566726781978749233::1734894860::1734894875::1::::<><>::
 ::res://assets/pixil_assets/::1736035917
-::res://scenes/::1736963671
-fleet_picker.tscn::PackedScene::4096080429446727459::1736963670::0::1::::<><>::res://scripts/fleet_picker.gd<>uid://b4b8ror8b47gu::::res://assets/frigate.png
-main_menu.tscn::PackedScene::4779392211660914775::1736963670::0::1::::<><>::res://scripts/main_menu.gd
-popup_container.tscn::PackedScene::3522159521463946106::1736963671::0::1::::<><>::res://scripts/popup_container.gd
-railgun_shell.tscn::PackedScene::7248759504999881964::1736963670::0::1::::<><>::res://scripts/railgun_shell.gd<>uid://bxhcjk4qim0oc::::res://assets/railgun_shell.png
-ship.tscn::PackedScene::1091769152421850961::1736963670::0::1::::<><>::res://scripts/ship.gd<>uid://b4b8ror8b47gu::::res://assets/frigate.png<>uid://b6fi1f2n7o8li::::res://assets/square.png
-space_game.tscn::PackedScene::8983032574248296989::1736963670::0::1::::<><>::res://scripts/battle.gd<>uid://5cfkkyubt5gd::::res://assets/Space Background.png<>uid://5huh3rm4jeux::::res://assets/asteroid_tileset.png<>uid://fyjyv6uo6dg1::::res://assets/overlay_tileset.png<>res://scripts/Camera2D.gd<>uid://c7mpekeyrxs4t::::res://scenes/ui.tscn
-ui.tscn::PackedScene::7044575327445885053::1736963670::0::1::::<><>::res://scripts/UI.gd<>uid://b6cfk8i7jrvjt::::res://assets/torpedo.png<>uid://bxhcjk4qim0oc::::res://assets/railgun_shell.png<>uid://dw1srebfa2mio::::res://icon.svg
-::res://scripts/::1736963473
+::res://scenes/::1736977632
+fleet_picker.tscn::PackedScene::4096080429446727459::1736977631::0::1::::<><>::res://scripts/fleet_picker.gd<>uid://b4b8ror8b47gu::::res://assets/frigate.png
+main_menu.tscn::PackedScene::4779392211660914775::1736977631::0::1::::<><>::res://scripts/main_menu.gd
+popup_container.tscn::PackedScene::3522159521463946106::1736977632::0::1::::<><>::res://scripts/popup_container.gd
+railgun_shell.tscn::PackedScene::7248759504999881964::1736977632::0::1::::<><>::res://scripts/railgun_shell.gd<>uid://bxhcjk4qim0oc::::res://assets/railgun_shell.png
+ship.tscn::PackedScene::1091769152421850961::1736977632::0::1::::<><>::res://scripts/ship.gd<>uid://b4b8ror8b47gu::::res://assets/frigate.png<>uid://b6fi1f2n7o8li::::res://assets/square.png
+space_game.tscn::PackedScene::8983032574248296989::1736977632::0::1::::<><>::res://scripts/battle.gd<>uid://5cfkkyubt5gd::::res://assets/Space Background.png<>uid://5huh3rm4jeux::::res://assets/asteroid_tileset.png<>uid://fyjyv6uo6dg1::::res://assets/overlay_tileset.png<>res://scripts/Camera2D.gd<>uid://c7mpekeyrxs4t::::res://scenes/ui.tscn
+ui.tscn::PackedScene::7044575327445885053::1736977631::0::1::::<><>::res://scripts/UI.gd<>uid://b6cfk8i7jrvjt::::res://assets/torpedo.png<>uid://bxhcjk4qim0oc::::res://assets/railgun_shell.png<>uid://dw1srebfa2mio::::res://icon.svg
+::res://scripts/::1736977631
 AIController.gd::GDScript::-1::1736958962::0::1::::<>Node<>::
-battle.gd::GDScript::-1::1736963473::0::1::::<>Node2D<>::
+battle.gd::GDScript::-1::1736977631::0::1::::<>Node2D<>::
 Camera2D.gd::GDScript::-1::1734049508::0::1::::<>Camera2D<>::
-cpu_frigate.gd::GDScript::-1::1736961382::0::1::::<>CharacterBody2D<>::
+cpu_frigate.gd::GDScript::-1::1736969567::0::1::::<>CharacterBody2D<>::
 fleet_picker.gd::GDScript::-1::1734046026::0::1::::<>Control<>::
-Global.gd::GDScript::-1::1736961508::0::1::::<>Node<>::
+Global.gd::GDScript::-1::1736977631::0::1::::<>Node<>::
 main_menu.gd::GDScript::-1::1733972831::0::1::::<>Control<>::
 player_frigate.gd::GDScript::-1::1736960732::0::1::::<>CharacterBody2D<>::
 popup_container.gd::GDScript::-1::1734478423::0::1::::<>Node2D<>::
 railgun_shell.gd::GDScript::-1::1736960732::0::1::::<>Area2D<>::
-ship.gd::GDScript::-1::1736963473::0::1::::<>CharacterBody2D<>::
+ship.gd::GDScript::-1::1736976824::0::1::::<>CharacterBody2D<>::
 SignalBus.gd::GDScript::-1::1736958962::0::1::::<>Node<>::
-UI.gd::GDScript::-1::1736960732::0::1::::<>CanvasLayer<>::
+UI.gd::GDScript::-1::1736969325::0::1::::<>CanvasLayer<>::
 ::res://sound/::1724956826

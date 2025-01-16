@@ -170,21 +170,20 @@ func popup(text, position, color):
    popup_instance.label.add_theme_color_override("font_color", color)
 
 func turn():
-   faction_turn(Global.friendly_ships)
-   faction_turn(Global.enemy_ships)
-   faction_turn(Global.neutral_ships)
-   print("turn completed")
+   await faction_turn(Global.friendly_ships)
+   await faction_turn(Global.enemy_ships)
+   await faction_turn(Global.neutral_ships)
    SignalBus.emit_signal("next_turn")
 
 func faction_turn(faction):
-   print("faction: ", faction, " starting turn")
+   print("Global: faction starting turn\n------------------------")
    for ship in faction:
       print("\n", ship.name, ": starting turn\n------------------------")
       current_selected = ship
       ship.is_selected = true
       await SignalBus.turn_complete
-      print("\n", ship.name, ": ending turn\n------------------------")
-   print("faction: ", faction, " ending turn")
+      print(ship.name, ": ending turn\n------------------------")
+   print("Global: faction ending turn\n------------------------")
 
 # called by map node after all new instances that access signals have been added
 func connect_signals():

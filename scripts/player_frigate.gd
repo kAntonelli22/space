@@ -3,6 +3,7 @@ extends "res://scripts/ship.gd"
 func _ready():
    super._ready()    # call ready function of ship class
    square.modulate = Color.BLUE
+   show_overlay = true
 # end of ready function ------------------------------------------------------
 
 func _process(delta):

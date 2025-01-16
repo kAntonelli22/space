@@ -37,10 +37,10 @@ func _draw():
    Global.draw_paths(self, Global.enemy_ships, Color.INDIAN_RED)
 
 # --- # --- # --- # --- # Issues -- # --- # --- # --- # --- #
-# - ship selection is bugged after ending turn
+# - added temp fix in show overlay variable for enemy ships showing overlay
+# - ship selection is bugged after ending turn, should probably force deselection on end turn
+# - can fire variables do not untoggle when deselected
 # - railgun shells can still freeze after hitting a ship
-# - await may not be working correctly
-# - attack overlay uses movement points and should not
 # - tiles that cannot be pathed to are automatically highlighted by overlays # # Solved? #
 # - fix isses with overlay and add missing r pieces
 # - Camera zoom doesnt adjust clamp

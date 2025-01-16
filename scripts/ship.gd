@@ -6,6 +6,7 @@ var is_selected : bool = false
 var is_moving : bool = false
 var is_firing : bool = false
 var ready_to_fire : bool = false
+var show_overlay : bool = false
 
 # constant variables
 var MAX_HEALTH : int = 10
@@ -107,7 +108,7 @@ func check_pathfinding(tiles, min_range, max_range):
       id_path.pop_front()        # remove the start coord from path
       
       # if id path size is less than movement points and current tile isnt solid -> apply movement overlay
-      if id_path.size() <= movement_points and id_path.size() > min_range and !Global.astar.is_point_solid(current_tile):
+      if id_path.size() <= max_range and id_path.size() > min_range and !Global.astar.is_point_solid(current_tile):
          queue.append(current_tile)
    # end of tile queue while loop --------------------------------------------
    return queue
@@ -134,7 +135,7 @@ func move_ship():
          is_moving = false
          current_position = main.tile_board.local_to_map(global_position)
          Global.astar.set_point_solid(current_position)
-         display_movement()
+         if show_overlay: display_movement()
    # end of global position equals next target point if statement ------------
 # end of move ship function --------------------------------------------------
 
@@ -155,12 +156,13 @@ func fire_railgun(target : Vector2i):
 
 # refresh ship actions and logic after end of turn
 func next_turn():
+   print("ship: starting next turn")
    # reset movement and action points
    movement_points = MAX_MOVEMENT
    action_points = MAX_ACTION
    SignalBus.attributes_changed.emit(self, null)
-   if is_selected:
-      display_movement()
+   #if is_selected:
+      #display_movement()
 # end of next turn button ----------------------------------------------------
 
 # deselect ship if other ship emits select signal
@@ -184,6 +186,7 @@ func shell_destroyed(_weapon, _origin):
 # # ui buttons
 # handle railgun ui button being pressed
 func ui_railgun():
+   print("ship: ui signal received")
    if is_selected and !ready_to_fire:
       ready_to_fire = true
       main.tile_overlay.clear()
