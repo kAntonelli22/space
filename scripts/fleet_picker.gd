@@ -88,4 +88,4 @@ func _on_back_button_pressed() -> void:
 func _on_start_button_pressed() -> void:
    Global.player_fleet = player_fleet
    Global.enemy_fleet = enemy_fleet
-   get_tree().change_scene_to_file("res://scenes/space_game.tscn")
+   get_tree().change_scene_to_file("res://scenes/battle.tscn")

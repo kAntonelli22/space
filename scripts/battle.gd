@@ -37,9 +37,11 @@ func _draw():
    Global.draw_paths(self, Global.enemy_ships, Color.INDIAN_RED)
 
 # --- # --- # --- # --- # Issues -- # --- # --- # --- # --- #
+# - overflow error after a few turns and infinite loop?
+# - ai attacks at the start of its movement instead of the end
+# - shells need to be changed to calculate damage per hit and stop causing damage after contact
+
 # - added temp fix in show overlay variable for enemy ships showing overlay
-# - ship selection is bugged after ending turn, should probably force deselection on end turn
-# - can fire variables do not untoggle when deselected
 # - railgun shells can still freeze after hitting a ship
 # - tiles that cannot be pathed to are automatically highlighted by overlays # # Solved? #
 # - fix isses with overlay and add missing r pieces
@@ -48,12 +50,11 @@ func _draw():
 
 # --- # --- # --- # --- # Issues -- # --- # --- # --- # --- #
 # --- # --- # --- # --- # Todo List # --- # --- # --- # --- #
-# - ai_attack function
+# - utilize raycasting for collision instead of current pathfinding functions
 # - optimize check pathfinding and display functions
 # - tilemap collision only astar grid for pathfinding function
 # - 10x health and damage
 # - highlight tile mouse is currently over?
-# - minimum range?
 # - merge action points and movement points?
 # - add key binds for each ui button
 # - visible health bars or health numbers when a ship or object is hit

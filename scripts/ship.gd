@@ -157,6 +157,12 @@ func fire_railgun(target : Vector2i):
 # refresh ship actions and logic after end of turn
 func next_turn():
    print("ship: starting next turn")
+   # reset logic booleans
+   is_selected = false
+   is_moving = false
+   is_firing = false
+   ready_to_fire = false
+   show_overlay = false
    # reset movement and action points
    movement_points = MAX_MOVEMENT
    action_points = MAX_ACTION
@@ -170,6 +176,10 @@ func select_signal(_obj_selected, obj_deselected):
    if is_selected and obj_deselected == self:
       main.tile_overlay.clear()
       is_selected = false
+      is_moving = false
+      is_firing = false
+      ready_to_fire = false
+      show_overlay = false
    
 # check if ship has been hit by a projectile
 func object_hit(obj : Object, _weapon : Object, damage_dealt : int, _origin : Object):

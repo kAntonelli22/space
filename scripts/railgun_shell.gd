@@ -30,6 +30,7 @@ func _on_body_entered(body):
       SignalBus.obj_hit.emit(body, self, damage, origin)
       hit_target = true
       if !miss:
+         print("railgun: hit target")
          position = body.position
          $Sprite2D.texture = preload("res://assets/railgun_debris.png")
          $DestroyTimer.start()
@@ -39,14 +40,17 @@ func _physics_process(delta):
    if !hit_target or miss:
       position += direction * speed * delta
    elif hit_target and !miss:
+      print("railgun: hit target")
       # slow down movement and fade away
       position += direction * (speed / 10.0) * delta
       sprite.modulate.a -= 0.05
 
 func _on_visible_on_screen_notifier_2d_screen_exited():
+   print("railgun: shell destroyed")
    SignalBus.shell_destroyed.emit(self, origin)
    self.queue_free()
 
 func _on_destroy_timer_timeout():
+   print("railgun: shell destroyed")
    SignalBus.shell_destroyed.emit(self, origin)
    self.queue_free()

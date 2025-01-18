@@ -24,4 +24,8 @@ shape = SubResource("RectangleShape2D_1ghsk")
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("2_v6yhh")
 
+[node name="RayCast2D" type="RayCast2D" parent="."]
+enabled = false
+target_position = Vector2(0, 48)
+
 [connection signal="input_event" from="." to="." method="_on_input_event"]

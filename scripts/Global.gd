@@ -46,11 +46,7 @@ func _ready() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
-   player_ships = get_tree().get_nodes_in_group("PlayerShips")
-   friendly_ships = get_tree().get_nodes_in_group("FriendlyShips")
-   neutral_ships = get_tree().get_nodes_in_group("NeutralShips")
-   enemy_ships = get_tree().get_nodes_in_group("EnemyShips")
-   faction_groups = [player_ships, enemy_ships]
+   update_factions(null)
    
    # redraw path
    if main: main.queue_redraw()
@@ -133,18 +129,14 @@ func deploy_fleet(fleet : Array, faction : int, coords : Vector2):
 func instance_ship(map, ship_type : String, faction : int, ship_position : Vector2i):
    var ship = ship_scene.instantiate()
    ship.set_script(ships[ship_type][faction])
-   print("ship ", ship_type + str(faction_groups[faction].size()), " added")
+   print("Global: ship ", ship_type + str(faction_groups[faction].size()), " added")
    ship.name = ship_type + str(faction_groups[faction].size())
    ship.position = map.tile_board.map_to_local(ship_position)
    ship.faction = faction
    map.add_child(ship)
    ship.sprite.rotation += deg_to_rad(180 * faction)
    
-   player_ships = get_tree().get_nodes_in_group("PlayerShips")
-   friendly_ships = get_tree().get_nodes_in_group("FriendlyShips")
-   neutral_ships = get_tree().get_nodes_in_group("NeutralShips")
-   enemy_ships = get_tree().get_nodes_in_group("EnemyShips")
-   faction_groups = [player_ships, enemy_ships]
+   update_factions(null)
 # end of instance ship function ----------------------------------------------
 
 func instance_shell(target, ship, percent):
@@ -162,7 +154,7 @@ func instance_shell(target, ship, percent):
 
 # display text
 func popup(text, position, color):
-   print("popup function activated")
+   print("Global: popup function activated")
    var popup_instance = text_popup.instantiate()
    main.add_child(popup_instance)
    popup_instance.label.text = text
@@ -170,6 +162,7 @@ func popup(text, position, color):
    popup_instance.label.add_theme_color_override("font_color", color)
 
 func turn():
+   main.tile_overlay.clear()
    await faction_turn(Global.friendly_ships)
    await faction_turn(Global.enemy_ships)
    await faction_turn(Global.neutral_ships)
@@ -185,6 +178,12 @@ func faction_turn(faction):
       print(ship.name, ": ending turn\n------------------------")
    print("Global: faction ending turn\n------------------------")
 
+func update_factions(_ship):
+   player_ships = get_tree().get_nodes_in_group("PlayerShips")
+   friendly_ships = get_tree().get_nodes_in_group("FriendlyShips")
+   neutral_ships = get_tree().get_nodes_in_group("NeutralShips")
+   enemy_ships = get_tree().get_nodes_in_group("EnemyShips")
+   faction_groups = [player_ships, enemy_ships]
 # called by map node after all new instances that access signals have been added
 func connect_signals():
-   pass
+   SignalBus.connect("ship_destroyed", update_factions)
