@@ -42,7 +42,7 @@ func ai_move():
             reachable_tiles.append(possible_tile)
       for ship in Global.player_ships:
          if reachable_tiles.has(ship.current_position):
-            var accuracy = calc_accuracy(current_position, ship.current_position)
+            var accuracy = await calc_accuracy(current_position, ship.current_position)
             #print(accuracy, ship.health_points, ship.damage)
             potential += accuracy - ship.health_points - ship.damage
             #print("cpu: current potential of ", tile, ": ", potential)
@@ -79,7 +79,7 @@ func ai_attack():
          valid_targets.append(target)
             
    for target in valid_targets:
-      var potential : int = calc_accuracy(current_position, target.current_position)
+      var potential : int = await calc_accuracy(current_position, target.current_position)
       potential -= target.health_points + target.damage
       if target.health_points <= damage:
          #print("cpu: potential to destroy enemy ship")

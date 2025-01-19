@@ -30,7 +30,7 @@ func _on_body_entered(body):
       SignalBus.obj_hit.emit(body, self, damage, origin)
       hit_target = true
       if !miss:
-         print("railgun: hit target")
+         #print("railgun: hit target")
          position = body.position
          $Sprite2D.texture = preload("res://assets/railgun_debris.png")
          $DestroyTimer.start()

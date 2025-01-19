@@ -37,6 +37,7 @@ func _draw():
    Global.draw_paths(self, Global.enemy_ships, Color.INDIAN_RED)
 
 # --- # --- # --- # --- # Issues -- # --- # --- # --- # --- #
+# - need to find a way to force update or ensure updates are waited for in calc accuracy
 # - overflow error after a few turns and infinite loop?
 # - ai attacks at the start of its movement instead of the end
 # - shells need to be changed to calculate damage per hit and stop causing damage after contact

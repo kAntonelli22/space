@@ -32,6 +32,8 @@ var damage : int = 4    # average damage that the ship is capable of each turn, 
 @onready var sprite = $Sprite2D
 @onready var collider = $CollisionShape2D
 @onready var square = $Square
+@onready var area = $WeaponArea
+@onready var area_shape = $WeaponArea/WeaponCollider
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -141,6 +143,21 @@ func move_ship():
 
 func calc_accuracy(tile, target) -> int:
    var accuracy : int = 100
+   var b : Vector2 = main.tile_board.map_to_local(tile - target) - Vector2(16, 16)
+   area_shape.shape.set_b(Vector2(-b.x, -b.y))
+   area_shape.shape.b = Vector2(-b.x, -b.y)
+   await get_tree().physics_frame
+   #physics_collision
+   var bodies : Array = area.get_overlapping_bodies()
+   print("ship: accuracy function: area bodies: ", bodies)
+   for body in bodies:
+      print("ship: accuracy function has found: ", body)
+      #if body is solid body (asteroid)
+   # - - accuracy = 0
+   # - - #call accuracy popup on body
+   # - - return
+   # - elif body is semi-solid (asteroid bunch):
+   # - - accuracy - 40
    var distance = tile.distance_to(target)
    accuracy -= (distance * 10)  
    #accuracy -= number of debris objects on path
@@ -148,7 +165,7 @@ func calc_accuracy(tile, target) -> int:
    
 # fires a single railgun shell at the target tile
 func fire_railgun(target : Vector2i):
-   var accuracy = calc_accuracy(current_position, target)
+   var accuracy = await calc_accuracy(current_position, target)
    is_firing = true
    action_points -= 1
    SignalBus.attributes_changed.emit(self, null)
