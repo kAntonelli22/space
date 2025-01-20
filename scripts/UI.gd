@@ -16,12 +16,24 @@ extends CanvasLayer
 @onready var railgun_button = $"Left Side/Railgun"
 @onready var pdc_button = $"Left Side/PDC"
 @onready var attack_buttons : Array = [torpedo_button, railgun_button, pdc_button]
+
+# ui debug components
+@onready var debug_cursor_rect = $CursorRect
+@onready var debug_cursor_label = $CursorRect/CursorLabel
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
+   if Global.debug_mode:
+      debug_cursor_rect.visible = true
    pass
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):
+   if Global.debug_mode:
+      var mouse_position = main_node.mouse_position
+      var grid_mouse_position =  main_node.tile_board.local_to_map(mouse_position)
+      debug_cursor_rect.position = get_viewport().get_mouse_position() + Vector2(16, 16)
+      debug_cursor_label.text = "coords: " + str(round(mouse_position)) + "\ntile coords: " + str(grid_mouse_position)
    pass
 
 func lock_ui():

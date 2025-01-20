@@ -40,7 +40,7 @@ func _physics_process(delta):
    if !hit_target or miss:
       position += direction * speed * delta
    elif hit_target and !miss:
-      print("railgun: hit target")
+      #print("railgun: hit target")
       # slow down movement and fade away
       position += direction * (speed / 10.0) * delta
       sprite.modulate.a -= 0.05

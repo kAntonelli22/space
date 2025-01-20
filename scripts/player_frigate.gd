@@ -3,6 +3,7 @@ extends "res://scripts/ship.gd"
 func _ready():
    super._ready()    # call ready function of ship class
    square.modulate = Color.BLUE
+   line.modulate = Color.BLUE
    show_overlay = true
 # end of ready function ------------------------------------------------------
 
@@ -24,7 +25,7 @@ func _input(event):
    
    # fire railgun shell
    if event.is_action_pressed("RMB") and ![is_selected, over_object, ready_to_fire].has(false) and action_points > 0:
-      fire_railgun(tile)
+      if calc_accuracy(current_position, tile, true) > 0: fire_railgun(tile)
       
    # if user clicks while ship selected -> move
    if event.is_action_pressed("RMB") and ![is_selected, !over_object, !ready_to_fire].has(false):
@@ -34,6 +35,7 @@ func _input(event):
          
       # if local path var isnt empty -> set global path var and point path var
       if !id_path.is_empty() and id_path.size() <= movement_points:
+         movement_line(id_path)       # draw line to movement target
          main.tile_overlay.clear()    # clear movement overlay
          movement_points -= id_path.size()
          SignalBus.attributes_changed.emit(self, null)

@@ -20,12 +20,15 @@ var railgun_shell := preload("res://scenes/railgun_shell.tscn")
 var text_popup := preload("res://scenes/popup_container.tscn")
 
 # global variables
+var debug_mode : bool = true
+
 var main : Node2D
 var map_size : Vector2i
 var map_rect : Rect2i
 var tile_size : Vector2i
 
-var astar : AStarGrid2D = AStarGrid2D.new()
+var astar : AStarGrid2D = AStarGrid2D.new()        # astar grid used for pathfinding, has obstacles, taxicab
+var astar_clear : AStarGrid2D = AStarGrid2D.new()  # astar grid used for getting straight lines, no obstacles, euclidean
 var current_selected : Object
 
 # custom battle variables
@@ -49,7 +52,7 @@ func _process(_delta: float) -> void:
    update_factions(null)
    
    # redraw path
-   if main: main.queue_redraw()
+   #if main: main.queue_redraw()
    
 func draw_paths(map, group : Array, color: Color):
    # loop through friendly ships and draw paths
@@ -67,6 +70,16 @@ func update_pathfinding(map):
    map_size = map.tile_board.get_used_rect().end - map.tile_board.get_used_rect().position
    map_rect = Rect2i(Vector2.ZERO, map_size)
    tile_size = map.tile_board.tile_set.tile_size
+   
+   # set astar to integer map, set cell size, offset, movement style
+   astar_clear.region = map_rect
+   astar_clear.cell_size = tile_size
+   astar_clear.offset = tile_size / 2
+   astar_clear.default_compute_heuristic = AStarGrid2D.HEURISTIC_EUCLIDEAN
+   astar_clear.default_estimate_heuristic = AStarGrid2D.HEURISTIC_EUCLIDEAN
+   astar_clear.diagonal_mode = AStarGrid2D.DIAGONAL_MODE_ALWAYS
+   # update the astar grid to apply changes to settings
+   astar_clear.update()
 
    # set astar to integer map, set cell size, offset, movement style
    astar.region = map_rect
@@ -159,6 +172,18 @@ func popup(text, position, color):
    main.add_child(popup_instance)
    popup_instance.label.text = text
    popup_instance.position = position
+   popup_instance.label.add_theme_color_override("font_color", color)
+
+# display text on tile
+func tile_popup(text, tile, color):
+   print("Global: tile popup function activated")
+   var popup_instance = text_popup.instantiate()
+   main.add_child(popup_instance)
+   popup_instance.label.text = text
+   popup_instance.position = main.tile_board.map_to_local(tile)
+   if color:
+      main.tile_overlay.set_cells_terrain_connect([tile], 0, 3)
+      # add tint to overlay
    popup_instance.label.add_theme_color_override("font_color", color)
 
 func turn():

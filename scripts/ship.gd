@@ -32,8 +32,7 @@ var damage : int = 4    # average damage that the ship is capable of each turn, 
 @onready var sprite = $Sprite2D
 @onready var collider = $CollisionShape2D
 @onready var square = $Square
-@onready var area = $WeaponArea
-@onready var area_shape = $WeaponArea/WeaponCollider
+@onready var line = $Line2D
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -76,50 +75,12 @@ func _physics_process(_delta):
 func _on_input_event(_viewport, _event, _shape_idx):
    pass
 
-func display_movement():
-   # get all tiles in a square around ship based on movement points, +1 offset
-   var tile_queue : Array = Global.get_tiles(current_position, movement_points, movement_points)
-   # end of for loop ---------------------------------------------------------
-   tile_queue = check_pathfinding(tile_queue, 0, movement_points)
-   main.tile_overlay.set_cells_terrain_connect(tile_queue, 0, 2)
-# end of display movement function -------------------------------------------
-
-func display_attack(min_range : int, max_range : int):
-   var tile_queue : Array
-   
-   # get all tiles in a square around ship based on movement points, +1 offset
-   for i in range(-max_range, max_range + 1):
-         for j in range(-max_range, max_range + 1):
-            var tile_coords : Vector2i = Vector2i(current_position.x + i, current_position.y + j)
-            if Global.check_cardinal(tile_coords, current_position):
-               tile_queue.append(tile_coords)
-   # end of for loop ---------------------------------------------------------
-   tile_queue = check_pathfinding(tile_queue, min_range, max_range)
-   main.tile_overlay.set_cells_terrain_connect(tile_queue, 0, 3)
-# end of display movement function -------------------------------------------
-
-func check_pathfinding(tiles, min_range, max_range):
-   var id_path : Array[Vector2i] # contains the pathfinding point array
-   var queue : Array             # contains the final tiles the overlay is to be added to
-   
-   while tiles:
-      var current_tile : Vector2i = tiles.pop_front()
-      if !Global.map_rect.has_point(current_tile): continue
-      id_path = []
-      id_path = Global.astar.get_id_path(current_position, current_tile)
-      id_path.pop_front()        # remove the start coord from path
-      
-      # if id path size is less than movement points and current tile isnt solid -> apply movement overlay
-      if id_path.size() <= max_range and id_path.size() > min_range and !Global.astar.is_point_solid(current_tile):
-         queue.append(current_tile)
-   # end of tile queue while loop --------------------------------------------
-   return queue
-# end of check_pathfinding function ---------------------------------------------
-
 # move ship
 func move_ship():
    # move global position of ship towards target
+   if line.points[0] == global_position: line.remove_point(0)
    global_position = global_position.move_toward(target_position, 2)
+   line.add_point(position, 0)
    # rotate the sprite to face the target position
    if global_position.direction_to(target_position) != Vector2(0, 0):
       sprite.look_at(global_position - global_position.direction_to(target_position))
@@ -129,6 +90,8 @@ func move_ship():
    if global_position == target_position:
       current_id_path.pop_front()
       current_point_path = current_point_path.slice(1)
+      line.remove_point(0)
+      print("ship: removing point 0")
       
       # if path isnt empty -> get new target point
       if !current_id_path.is_empty():
@@ -136,36 +99,75 @@ func move_ship():
       else: # else -> stop moving
          is_moving = false
          current_position = main.tile_board.local_to_map(global_position)
+         line.clear_points()
+         print("ship: clearing line")
          Global.astar.set_point_solid(current_position)
          if show_overlay: display_movement()
    # end of global position equals next target point if statement ------------
 # end of move ship function --------------------------------------------------
 
-func calc_accuracy(tile, target) -> int:
+func movement_line(points):
+   for i in range(0, points.size()):
+      line.add_point(main.tile_board.map_to_local(points[i]), i)
+      print("ship: added point: ", points[i], " to line")
+
+func display_movement():
+   # get all tiles in a square around ship based on movement points
+   var tile_queue : Array = Global.get_tiles(current_position, movement_points, movement_points)
+   tile_queue = check_pathfinding(Global.astar, tile_queue, 0, movement_points)
+   main.tile_overlay.set_cells_terrain_connect(tile_queue, 0, 2)
+# end of display movement function -------------------------------------------
+
+func display_attack(min_range : int, max_range : int):
+   # get all tiles in a square around ship based on weapon max range
+   var tile_queue : Array = Global.get_tiles(current_position, max_range, max_range)
+   tile_queue = check_pathfinding(Global.astar_clear, tile_queue, min_range, max_range)
+   main.tile_overlay.set_cells_terrain_connect(tile_queue, 0, 3)
+# end of display movement function -------------------------------------------
+
+func check_pathfinding(astar_grid, tiles, min_range, max_range):
+   var id_path : Array[Vector2i] # contains the pathfinding point array
+   var queue : Array             # contains the final tiles the overlay is to be added to
+   
+   while tiles:
+      var current_tile : Vector2i = tiles.pop_front()
+      if !Global.map_rect.has_point(current_tile): continue
+      id_path = []
+      id_path = astar_grid.get_id_path(current_position, current_tile)
+      id_path.pop_front()        # remove the start coord from path
+      
+      # if id path size is less than movement points and current tile isnt solid -> apply movement overlay
+      if id_path.size() <= max_range and id_path.size() > min_range and !astar_grid.is_point_solid(current_tile):
+         queue.append(current_tile)
+   # end of tile queue while loop --------------------------------------------
+   return queue
+# end of check_pathfinding function ---------------------------------------------
+
+func calc_accuracy(tile, target, create_popups) -> int:
    var accuracy : int = 100
-   var b : Vector2 = main.tile_board.map_to_local(tile - target) - Vector2(16, 16)
-   area_shape.shape.set_b(Vector2(-b.x, -b.y))
-   area_shape.shape.b = Vector2(-b.x, -b.y)
-   await get_tree().physics_frame
-   #physics_collision
-   var bodies : Array = area.get_overlapping_bodies()
-   print("ship: accuracy function: area bodies: ", bodies)
-   for body in bodies:
-      print("ship: accuracy function has found: ", body)
-      #if body is solid body (asteroid)
-   # - - accuracy = 0
-   # - - #call accuracy popup on body
-   # - - return
-   # - elif body is semi-solid (asteroid bunch):
-   # - - accuracy - 40
    var distance = tile.distance_to(target)
-   accuracy -= (distance * 10)  
-   #accuracy -= number of debris objects on path
+   var id_path = []
+   id_path = Global.astar_clear.get_id_path(tile, target)
+   id_path.pop_front()        # remove the start coord from path
+         
+   for point in id_path:
+      var tile_data = main.tile_board.get_cell_tile_data(point).get_custom_data("Type")
+      if tile_data == "asteroid":
+         accuracy = 0
+         if create_popups: Global.tile_popup("-100%", point, Color.RED)
+      elif tile_data == "asteroid_bunch":
+         accuracy -= 20
+         if create_popups: Global.tile_popup("-20%", point, Color.RED)
+      elif Global.check_collision_with_group("Ships", point):
+         accuracy -= 10
+         if create_popups: Global.tile_popup("-10%", point, Color.RED)
+   accuracy -= (distance * 10)
+   if distance > RAILGUN_MAX or accuracy < 0: accuracy = 0
    return accuracy
    
 # fires a single railgun shell at the target tile
 func fire_railgun(target : Vector2i):
-   var accuracy = await calc_accuracy(current_position, target)
+   var accuracy = calc_accuracy(current_position, target, false)
    is_firing = true
    action_points -= 1
    SignalBus.attributes_changed.emit(self, null)

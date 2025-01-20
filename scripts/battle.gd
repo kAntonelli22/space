@@ -2,6 +2,7 @@ extends Node2D
 
 # variables
 var turn_counter : int = 0
+var mouse_position : Vector2
 
 # nodes
 @onready var tile_board := $Board
@@ -27,7 +28,8 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):
-   queue_redraw()
+   if Global.debug_mode: mouse_position = get_global_mouse_position()
+   #queue_redraw()
    pass
 
 func _draw():
@@ -37,7 +39,6 @@ func _draw():
    Global.draw_paths(self, Global.enemy_ships, Color.INDIAN_RED)
 
 # --- # --- # --- # --- # Issues -- # --- # --- # --- # --- #
-# - need to find a way to force update or ensure updates are waited for in calc accuracy
 # - overflow error after a few turns and infinite loop?
 # - ai attacks at the start of its movement instead of the end
 # - shells need to be changed to calculate damage per hit and stop causing damage after contact
@@ -51,7 +52,8 @@ func _draw():
 
 # --- # --- # --- # --- # Issues -- # --- # --- # --- # --- #
 # --- # --- # --- # --- # Todo List # --- # --- # --- # --- #
-# - utilize raycasting for collision instead of current pathfinding functions
+# - continue work on calc_accuracy (add custom tile data)
+# - function that adds text next to a tile and highlights it (for calc accuracy)
 # - optimize check pathfinding and display functions
 # - tilemap collision only astar grid for pathfinding function
 # - 10x health and damage
